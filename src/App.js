@@ -1,34 +1,29 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './pages/Login';
+import DesignLibrary from './pages/DesignLibrary';
+import CollectionPage from './pages/CollectionPage';
+import ShareFeed from './pages/ShareFeed';
+import DesignStudio from './pages/DesignStudio';
+import Settings from './pages/Settings';
+import UserProfile from './pages/UserProfile';
+import Help from './pages/Help'
 
-function App() {
+const App = () => {
   return (
-    <div className="flex flex-col h-full items-center justify-center bg-gray-200 text-gray-700">
-      <div className="flex items-center">
-        <h1 className="text-6xl font-thin tracking-wider">Create React App + Tailwind CSS</h1>
-      </div>
-      <p className="my-6 tracking-wide">
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <div className="mt-6 flex justify-center">
-        <a
-          className="uppercase hover:underline"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="ml-10 uppercase hover:underline"
-          href="https://tailwindcss.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Tailwind
-        </a>
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/designlibrary" element={<DesignLibrary />} />
+        <Route path="/collection" element={<CollectionPage />} />
+        <Route path="/sharefeed" element={<ShareFeed />} />
+        <Route path="/designstudio" element={<DesignStudio />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/userprofile" element={<UserProfile />} />
+        <Route path='/help' element={<Help />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
