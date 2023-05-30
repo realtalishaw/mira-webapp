@@ -173,8 +173,7 @@ type EagerDesign = {
   readonly designName?: string | null;
   readonly designDescription?: string | null;
   readonly collectionID: string;
-  readonly tags?: string[] | null;
-  readonly designURL: string;
+  readonly tags?: (string | null)[] | null;
   readonly Comments?: (Comments | null)[] | null;
   readonly createdAt?: string | null;
   readonly Likes?: (Like | null)[] | null;
@@ -190,8 +189,7 @@ type LazyDesign = {
   readonly designName?: string | null;
   readonly designDescription?: string | null;
   readonly collectionID: string;
-  readonly tags?: string[] | null;
-  readonly designURL: string;
+  readonly tags?: (string | null)[] | null;
   readonly Comments: AsyncCollection<Comments>;
   readonly createdAt?: string | null;
   readonly Likes: AsyncCollection<Like>;
@@ -214,8 +212,9 @@ type EagerCollection = {
   readonly userID: string;
   readonly Designs?: (Design | null)[] | null;
   readonly createdAt?: string | null;
-  readonly collectionURL: string;
+  readonly collectionURL?: string | null;
   readonly Likes?: (Like | null)[] | null;
+  readonly privacy?: boolean | null;
   readonly updatedAt?: string | null;
 }
 
@@ -229,8 +228,9 @@ type LazyCollection = {
   readonly userID: string;
   readonly Designs: AsyncCollection<Design>;
   readonly createdAt?: string | null;
-  readonly collectionURL: string;
+  readonly collectionURL?: string | null;
   readonly Likes: AsyncCollection<Like>;
+  readonly privacy?: boolean | null;
   readonly updatedAt?: string | null;
 }
 
@@ -247,8 +247,8 @@ type EagerUser = {
   };
   readonly id: string;
   readonly avatar?: string | null;
-  readonly firstName?: string | null;
-  readonly lastName?: string | null;
+  readonly firstName: string;
+  readonly lastName: string;
   readonly username: string;
   readonly bio?: string | null;
   readonly website?: string | null;
@@ -274,8 +274,8 @@ type LazyUser = {
   };
   readonly id: string;
   readonly avatar?: string | null;
-  readonly firstName?: string | null;
-  readonly lastName?: string | null;
+  readonly firstName: string;
+  readonly lastName: string;
   readonly username: string;
   readonly bio?: string | null;
   readonly website?: string | null;

@@ -84,8 +84,8 @@ export default function UserUpdateForm(props) {
   React.useEffect(resetStateValues, [userRecord]);
   const validations = {
     avatar: [],
-    firstName: [],
-    lastName: [],
+    firstName: [{ type: "Required" }],
+    lastName: [{ type: "Required" }],
     username: [{ type: "Required" }],
     bio: [],
     website: [],
@@ -93,7 +93,7 @@ export default function UserUpdateForm(props) {
     instagramLink: [],
     twitterLink: [],
     email: [{ type: "Required" }, { type: "Email" }],
-    profileUrl: [{ type: "Required" }, { type: "URL" }],
+    profileUrl: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -214,7 +214,7 @@ export default function UserUpdateForm(props) {
       ></TextField>
       <TextField
         label="First name"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         value={firstName}
         onChange={(e) => {
@@ -248,7 +248,7 @@ export default function UserUpdateForm(props) {
       ></TextField>
       <TextField
         label="Last name"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         value={lastName}
         onChange={(e) => {

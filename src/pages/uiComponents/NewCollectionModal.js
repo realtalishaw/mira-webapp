@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
 import { XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import {  DataStore } from 'aws-amplify';
+import { Collection } from '../../models'
 
-const NewCollectionModal = ({ isOpen, onClose }) => {
+const NewCollectionModal = ({ isOpen, onClose, user }) => {
     const [collectionName, setCollectionName] = useState("");
     const [collectionInfo, setCollectionInfo] = useState("");
     const [isPublic, setIsPublic] = useState(true);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Submit your form
-    }
+    
+        try {
+          const collectionInput = {
+            collectionName,
+            userID: user.id, 
+          };
+          
+    
+           const result = await DataStore.save(new Collection(collectionInput));
+      
+          console.log("Collection created: ", result);
+          // you might want to close the modal and/or update the state to reflect the new collection
+           onClose();
+        } catch (error) {
+          console.error("Error creating new collection: ", error);
+        }
+      }
+      
 
     const collectionNameExceeded = collectionName.length > 50;
     const collectionInfoExceeded = collectionInfo.length > 400;

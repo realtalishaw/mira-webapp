@@ -464,16 +464,9 @@ export const schema = {
                     "name": "tags",
                     "isArray": true,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
-                },
-                "designURL": {
-                    "name": "designURL",
-                    "isArray": false,
-                    "type": "AWSURL",
-                    "isRequired": true,
-                    "attributes": []
                 },
                 "Comments": {
                     "name": "Comments",
@@ -607,8 +600,8 @@ export const schema = {
                 "collectionURL": {
                     "name": "collectionURL",
                     "isArray": false,
-                    "type": "AWSURL",
-                    "isRequired": true,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "Likes": {
@@ -626,6 +619,13 @@ export const schema = {
                             "collectionID"
                         ]
                     }
+                },
+                "privacy": {
+                    "name": "privacy",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -691,14 +691,14 @@ export const schema = {
                     "name": "firstName",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "lastName": {
                     "name": "lastName",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "username": {
@@ -801,7 +801,7 @@ export const schema = {
                 "profileUrl": {
                     "name": "profileUrl",
                     "isArray": false,
-                    "type": "AWSURL",
+                    "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -1095,5 +1095,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "77675228311c0af6437257882e03e46b"
+    "version": "5adfebc20ff7e49931025b8a323d7654"
 };
