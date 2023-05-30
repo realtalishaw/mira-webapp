@@ -1,8 +1,8 @@
 import React from 'react';
-import CollectionHeader from '../ui-components/CollectionHeader';
-import Header from '../ui-components/Header';
-import EmptyState from '../ui-components/EmptyState';
-import DesignCard from '../ui-components/DesignCard';
+import CollectionHeader from '../uiComponents/CollectionHeader';
+import Header from '../uiComponents/Header';
+import EmptyState from '../uiComponents/EmptyState';
+import DesignCard from '../uiComponents/DesignCard';
 
 const CollectionPage = () => {
 

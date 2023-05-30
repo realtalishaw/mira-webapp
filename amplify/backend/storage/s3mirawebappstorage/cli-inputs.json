@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3mirawebappstorage",
+  "bucketName": "mira-webapp-storage",
+  "policyUUID": "7aa3c8a0",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

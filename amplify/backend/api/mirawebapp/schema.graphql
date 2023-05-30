@@ -1,0 +1,81 @@
+type Following @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: String
+  followingId: [User] @manyToMany(relationName: "FollowingUser")
+}
+
+type Followers @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime
+  users: [User] @manyToMany(relationName: "UserFollowers")
+}
+
+type Like @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  createdAt: AWSDateTime
+  userID: ID! @index(name: "byUser")
+  collectionID: ID! @index(name: "byCollection")
+  designID: ID! @index(name: "byDesign")
+}
+
+type Comments @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  content: String
+  userID: ID! @index(name: "byUser")
+  designID: ID! @index(name: "byDesign")
+  createdAt: AWSDateTime
+}
+
+type MoodBoard @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  colors: [String]
+  textures: [AWSURL]
+  patterns: [AWSURL]
+  inspiration: [AWSURL]
+  userID: ID! @index(name: "byUser")
+  createdAt: AWSDate
+}
+
+type Design @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  designName: String
+  designDescription: String
+  collectionID: ID! @index(name: "byCollection")
+  tags: [String!]
+  designURL: AWSURL!
+  Comments: [Comments] @hasMany(indexName: "byDesign", fields: ["id"])
+  createdAt: AWSDateTime
+  Likes: [Like] @hasMany(indexName: "byDesign", fields: ["id"])
+}
+
+type Collection @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  collectionName: String!
+  userID: ID! @index(name: "byUser")
+  Designs: [Design] @hasMany(indexName: "byCollection", fields: ["id"])
+  createdAt: AWSDateTime
+  collectionURL: AWSURL!
+  Likes: [Like] @hasMany(indexName: "byCollection", fields: ["id"])
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  avatar: String
+  firstName: String
+  lastName: String
+  username: String!
+  bio: String
+  website: String
+  facebookLink: String
+  instagramLink: String
+  twitterLink: String
+  email: AWSEmail!
+  Collections: [Collection] @hasMany(indexName: "byUser", fields: ["id"])
+  MoodBoards: [MoodBoard] @hasMany(indexName: "byUser", fields: ["id"])
+  Comments: [Comments] @hasMany(indexName: "byUser", fields: ["id"])
+  profileUrl: AWSURL!
+  Likes: [Like] @hasMany(indexName: "byUser", fields: ["id"])
+  Followers: [Followers] @manyToMany(relationName: "UserFollowers")
+  followings: [Following] @manyToMany(relationName: "FollowingUser")
+}

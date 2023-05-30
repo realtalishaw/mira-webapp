@@ -1,7 +1,7 @@
 import React from 'react';
-import DesignStudioHeader from '../ui-components/DesignStudioHeader';
-import Sidebar from '../ui-components/Sidebar';
-import ImageHolder from '../ui-components/ImageHolder';
+import DesignStudioHeader from '../uiComponents/DesignStudioHeader';
+import Sidebar from '../uiComponents/Sidebar';
+import ImageHolder from '../uiComponents/ImageHolder';
 
 // Dummy images
 const images = [

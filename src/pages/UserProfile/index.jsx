@@ -1,7 +1,7 @@
 import React from 'react';
-import UserProfileHeader from '../ui-components/UserProfileHeader';
-import CollectionCard from '../ui-components/CollectionCard';
-import Header from '../ui-components/Header';
+import UserProfileHeader from '../uiComponents/UserProfileHeader';
+import CollectionCard from '../uiComponents/CollectionCard';
+import Header from '../uiComponents/Header';
 const UserProfile = () => {
   return (
     <div>

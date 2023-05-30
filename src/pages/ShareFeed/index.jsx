@@ -1,6 +1,6 @@
 import React from 'react';
-import SocialCard from '../ui-components/SocialCard';
-import Header  from '../ui-components/Header';
+import SocialCard from '../uiComponents/SocialCard';
+import Header  from '../uiComponents/Header';
 
 const ShareFeed = () => {
   const socialCardsData = [

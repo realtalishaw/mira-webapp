@@ -1,8 +1,21 @@
 import React from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { BellIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import { Auth } from 'aws-amplify';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await Auth.signOut();
+      navigate("/");
+    } catch (error) {
+      console.error('Error signing out: ', error);
+    }
+  }
+
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-white shadow">
       <div>
@@ -65,8 +78,8 @@ const Header = () => {
     <a href="/settings" className="block w-full px-4 py-2 text-left hover:bg-gray-100">Settings & Privacy</a>
   </Menu.Item>
   <Menu.Item>
-    <a href="/logout" className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100">Logout</a>
-  </Menu.Item>
+      <button onClick={handleLogout} className="block w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100">Logout</button>
+    </Menu.Item>
 </Menu.Items>
 
           </Transition>
