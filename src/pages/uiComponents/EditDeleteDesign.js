@@ -1,57 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { XMarkIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { DataStore } from '@aws-amplify/datastore';
-import { Collection } from '../../models';
+import { Design} from '../../models';
 
 
-const EditDeleteCollectionModal = ({ isOpen, onClose, collectionName, collection_id }) => {
-  const [newCollectionName, setNewCollectionName] = useState(collectionName);
+const EditDeleteDesign = ({ isOpen, onClose, DesignName, design_id, mode }) => {
+  const [newDesignName, setNewDesignName] = useState(DesignName);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+
+  useEffect(() => {
+    if (mode === 'delete') {
+      setIsDeleteMode(true);
+    } else {
+      setIsDeleteMode(false);
+    }
+  }, [mode]);
 
   const handleDeleteClick = () => {
     setIsDeleteMode(true);
   };
 
   const handleSave = async () => {
-    console.log("Collection Saved!!")
     try {
-      // Fetch the original collection
-      const originalCollection = await DataStore.query(Collection, collection_id);
+      // Fetch the original design
+      const originalDesign = await DataStore.query(Design, design_id);
   
       // Make a copy with the new name and save it
-      await DataStore.save(
-        Collection.copyOf(originalCollection, updated => {
-          updated.collectionName = newCollectionName;
+      const updated = await DataStore.save(
+        Design.copyOf(originalDesign, updated => {
+          updated.designName = newDesignName;
         })
       );
-    
+   
       onClose();
     } catch (error) {
-      console.error("An error occurred while saving the collection:", error);
+      console.error("An error occurred while saving the design:", error);
     }
   };
   
+  const handleDelete = async () => {
+    try {
+      // Log the collection_id
+      console.log("Deleting design with id:", design_id);
   
- const handleDelete = async () => {
-  try {
-    // Log the collection_id
-    console.log("Deleting collection with id:", collection_id);
-
-    // Fetch the original collection
-    const originalCollection = await DataStore.query(Collection, collection_id);
-
-    // Log the result of the query
-    console.log("Query result:", originalCollection);
-
-    // Delete it
-    await DataStore.delete(originalCollection);
-
-    onClose();
-  } catch (error) {
-    console.error("An error occurred while deleting the collection:", error);
-  }
-};
-
+      // Fetch the original collection
+      const originalDesign = await DataStore.query(Design, design_id);
+  
+      // Log the result of the query
+      console.log("Query result:", originalDesign);
+  
+      // Delete it
+      await DataStore.delete(originalDesign);
+  
+      onClose();
+    } catch (error) {
+      console.error("An error occurred while deleting the design:", error);
+    }
+  };
+  
   
 
   const handleCancel = () => {
@@ -64,27 +70,27 @@ const EditDeleteCollectionModal = ({ isOpen, onClose, collectionName, collection
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="w-1/3 mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="flex items-center justify-between p-6">
-          <h2 className="text-lg font-bold">Edit or Delete Collection</h2>
+          <h2 className="text-lg font-bold">Edit or Delete Design</h2>
           <button onClick={onClose}><XMarkIcon className="w-6 h-6" /></button>
         </div>
 
         {!isDeleteMode ? (
           <div className="p-6">
             <div className="mb-4">
-              <label>Rename your Collection</label>
+              <label>Rename your Design</label>
               <input
                 type="text"
-                value={newCollectionName}
-                onChange={(e) => setNewCollectionName(e.target.value)}
+                value={newDesignName}
+                onChange={(e) => setNewDesignName(e.target.value)}
                 className="w-full p-2 border rounded-md"
               />
-              <p className="text-right">{newCollectionName.length}/50</p>
+              <p className="text-right">{newDesignName.length}/50</p>
             </div>
 
             <div className="flex justify-between items-center">
               <button onClick={handleDeleteClick} className="flex items-center text-red-500">
                 <TrashIcon className="w-5 h-5 mr-1" />
-                Delete Collection
+                Delete Design
               </button>
               <button onClick={handleSave} className="py-2 px-4 btn btn-outline">Save</button>
             </div>
@@ -92,7 +98,7 @@ const EditDeleteCollectionModal = ({ isOpen, onClose, collectionName, collection
         ) : (
           <div className="p-6 text-center">
             <TrashIcon className="w-10 h-10 mx-auto mb-4" />
-            <p>The collection '{collectionName}' will be deleted. You cannot undo this.</p>
+            <p>The design '{DesignName}' will be deleted. You cannot undo this.</p>
             <button onClick={handleDelete} className="py-2 px-4 rounded text-white bg-red-500 mt-4">Delete</button>
           </div>
         )}
@@ -108,4 +114,4 @@ const EditDeleteCollectionModal = ({ isOpen, onClose, collectionName, collection
     ) : null;    
 };
 
-export default EditDeleteCollectionModal;
+export default EditDeleteDesign;

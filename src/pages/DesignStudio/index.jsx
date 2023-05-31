@@ -9,11 +9,9 @@ import {  useParams } from 'react-router-dom';
 
 
 
-const DesignStudio= () => {
+const DesignStudio = () => {
   const { imageUrl } = useContext(DesignStudioContext);
-  const images = [
-    imageUrl
-  ];
+  const images = imageUrl || [];
   const { collection_name } = useParams();
 
   return (
@@ -25,7 +23,7 @@ const DesignStudio= () => {
 
         {/* Right-side workspace */}
         <div className="w-full" >
-          <ImageHolder images={images} />
+          <ImageHolder images={imageUrl} />
         </div>
       </div>
     </div>

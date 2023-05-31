@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import { useContext } from 'react';
+import { DesignStudioContext } from '../../DesignStudioContext';
 
 const ImageHolder = ({ images }) => {
-  const [selectedImage, setSelectedImage] = useState(images[0]);
+  const { selectedImage, setSelectedImage } = useContext(DesignStudioContext); // Fetch selectedImage here
   const [isTrayOpen, setIsTrayOpen] = useState(true);
 
+  if (!images?.length) {
+    return null; // Or return a loading spinner
+  }
+ 
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };

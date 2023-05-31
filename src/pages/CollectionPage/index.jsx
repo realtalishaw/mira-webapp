@@ -18,6 +18,7 @@ const CollectionPage = () => {
 
   useEffect(() => {
     const loadCollectionAndDesigns = async () => {
+
       const loadedCollection = await DataStore.query(Collection, collection_id);
   
       // Query designs related to the collection
@@ -25,6 +26,7 @@ const CollectionPage = () => {
   
       setCollection(loadedCollection);
       setDesigns(loadedDesigns);
+   
     }
   
     loadCollectionAndDesigns();
@@ -49,7 +51,7 @@ const CollectionPage = () => {
   }
 
 
-  
+  console.log("FEtched designs are:", designs)
 
   return (
     <div>
@@ -63,7 +65,7 @@ const CollectionPage = () => {
       <div className='grid grid-cols-4 gap-6 w-3/4 mx-auto'>
         <EmptyState onNewCollectionClick={newDesign} title='New Design' />
         {designs.map(design => (
-          <a href={`/designstudio/${collection?.collectionName}/${design.id}`}><DesignCard key={design.id} design={{ name: design.designName || 'Untitled', image: design.designImage }} isOwner={true} /></a>
+          <DesignCard key={design.id} design={{ name: design.designName || 'Untitled', image: design.designImage, id: design.id, collection: collection?.collectionName }} isOwner={true} />
         ))}
       </div>
     </div>

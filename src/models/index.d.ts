@@ -177,6 +177,7 @@ type EagerDesign = {
   readonly Comments?: (Comments | null)[] | null;
   readonly createdAt?: string | null;
   readonly Likes?: (Like | null)[] | null;
+  readonly designImage?: string | null;
   readonly updatedAt?: string | null;
 }
 
@@ -193,6 +194,7 @@ type LazyDesign = {
   readonly Comments: AsyncCollection<Comments>;
   readonly createdAt?: string | null;
   readonly Likes: AsyncCollection<Like>;
+  readonly designImage?: string | null;
   readonly updatedAt?: string | null;
 }
 

@@ -46,6 +46,7 @@ type Design @model @auth(rules: [{allow: public}]) {
   Comments: [Comments] @hasMany(indexName: "byDesign", fields: ["id"])
   createdAt: AWSDateTime
   Likes: [Like] @hasMany(indexName: "byDesign", fields: ["id"])
+  designImage: AWSURL
 }
 
 type Collection @model @auth(rules: [{allow: public}]) {
