@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "paths": {
+    "/create": {
+      "name": "/create",
+      "lambdaFunction": "mirawebapp34de6beb",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create"
+        ]
+      }
+    }
+  }
+}

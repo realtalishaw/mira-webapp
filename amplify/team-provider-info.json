@@ -17,6 +17,9 @@
       },
       "storage": {
         "s3mirawebappstorage": {}
+      },
+      "function": {
+        "mirawebapp34de6beb": {}
       }
     }
   }

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { XMarkIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { DataStore } from '@aws-amplify/datastore';
+import { Collection } from '../../models';
 
-const EditDeleteCollectionModal = ({ isOpen, onClose, collectionName }) => {
+
+const EditDeleteCollectionModal = ({ isOpen, onClose, collectionName, collection_id }) => {
   const [newCollectionName, setNewCollectionName] = useState(collectionName);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
@@ -9,15 +12,47 @@ const EditDeleteCollectionModal = ({ isOpen, onClose, collectionName }) => {
     setIsDeleteMode(true);
   };
 
-  const handleSave = () => {
-    // Handle the save action
-    onClose();
+  const handleSave = async () => {
+    console.log("Collection Saved!!")
+    try {
+      // Fetch the original collection
+      const originalCollection = await DataStore.query(Collection, collection_id);
+  
+      // Make a copy with the new name and save it
+      await DataStore.save(
+        Collection.copyOf(originalCollection, updated => {
+          updated.collectionName = newCollectionName;
+        })
+      );
+    
+      onClose();
+    } catch (error) {
+      console.error("An error occurred while saving the collection:", error);
+    }
   };
-
-  const handleDelete = () => {
-    // Handle the delete action
-    onClose();
+  
+  
+  const handleDelete = async () => {
+    try {
+      // Log the collection_id
+      console.log("Deleting collection with id:", collection_id);
+  
+      // Fetch the original collection
+      const originalCollection = await DataStore.query(Collection, collection_id);
+  
+      // Log the result of the query
+      console.log("Query result:", originalCollection);
+  
+      // Delete it
+      await DataStore.delete(originalCollection);
+  
+      onClose();
+    } catch (error) {
+      console.error("An error occurred while deleting the collection:", error);
+    }
   };
+  
+  
 
   const handleCancel = () => {
     setIsDeleteMode(false);

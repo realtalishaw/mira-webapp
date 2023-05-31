@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+import { useContext } from 'react';
+import { DesignStudioContext } from '../../DesignStudioContext';
 
 const Prompt = () => {
+  const { generateImage } = useContext(DesignStudioContext);
   const [view, setView] = useState('front');
   const [prompt, setPrompt] = useState('');
   const [negativePrompt, setNegativePrompt] = useState('');
 
-  const handleCreate = () => {
-    // handle create click here
+  const handleCreate = async () => {
+    // Combine the inputs into a single string
+    const designText = `${view} ${prompt} ${negativePrompt}`;
+    generateImage(designText);
   };
 
   return (

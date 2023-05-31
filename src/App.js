@@ -9,6 +9,7 @@ import Settings from './pages/Settings';
 import UserProfile from './pages/UserProfile';
 import Help from './pages/Help';
 import UserProvider from './UserProvider'; // import your UserProvider
+import { DesignStudioProvider } from './DesignStudioContext';
 
 const App = () => {
   return (
@@ -19,10 +20,17 @@ const App = () => {
           <Route path="/designlibrary/:username" element={<ProtectedElement><DesignLibrary /></ProtectedElement>} />
           <Route path="/collection/:collection_id" element={<ProtectedElement><CollectionPage /></ProtectedElement>} />
           <Route path="/sharefeed" element={<ShareFeed /> }/>
-          <Route path="/designstudio/:design_id" element={<ProtectedElement><DesignStudio /></ProtectedElement>} />
+          <Route path="/designstudio/:design_id" element={
+            <ProtectedElement>
+              <DesignStudioProvider>
+                <DesignStudio />
+              </DesignStudioProvider>
+            </ProtectedElement>
+          } />
           <Route path="/settings/:user_id" element={<ProtectedElement><Settings /></ProtectedElement>} />
-          <Route path="/@:username" element={<UserProfile />} />
+          <Route path="/@" element={<UserProfile />} />
           <Route path='/help' element={<ProtectedElement><Help /></ProtectedElement>} />
+          <Route path='/test' element={<DesignStudio />} />
         </Routes>
       </Router>
     </UserProvider>
@@ -30,3 +38,4 @@ const App = () => {
 };
 
 export default App;
+

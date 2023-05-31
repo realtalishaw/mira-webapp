@@ -14,7 +14,7 @@ const UserProvider = ({ children }) => {
         const result = await API.graphql(
           graphqlOperation(getUser, { id: currentUser.signInUserSession.idToken.payload.sub })
         );
-        console.log("Result of getUser inside UserContext", result)
+        
         setUser(result.data.getUser);
         
       } catch (error) {

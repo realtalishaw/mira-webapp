@@ -59,8 +59,10 @@ const CollectionHeader = ({ collectionName, username, avatarUrl }) => {
       </div>
 
       <div className="flex justify-center items-center mt-2">
+        <div className="avatar">
         <div className="w-12 rounded-full">
           <img src={avatarUrl} alt="User Avatar" />        </div>
+        </div>
         <p className="ml-2">
           By <Link to={`/@${username}`} className="underline">@{username}</Link>
         </p>

@@ -63,6 +63,7 @@ const DesignLibrary = () => {
           collectionName={collection.collectionName}
           isUserCollection={true}
           url={`/collection/${collection.id}`}
+          collection_id={collection.id}
         />
         ))}
       </div>

@@ -2,17 +2,18 @@ import React from 'react';
 import DesignStudioHeader from '../uiComponents/DesignStudioHeader';
 import Sidebar from '../uiComponents/Sidebar';
 import ImageHolder from '../uiComponents/ImageHolder';
+import { useContext } from 'react';
+import { DesignStudioContext } from '../../DesignStudioContext';
 
-// Dummy images
-const images = [
-  'https://via.placeholder.com/350',
-  'https://via.placeholder.com/450',
-  'https://via.placeholder.com/550',
-  'https://via.placeholder.com/650',
-  'https://via.placeholder.com/750',
-];
+
+
 
 const DesignStudio= () => {
+  const { imageUrl } = useContext(DesignStudioContext);
+  const images = [
+    imageUrl
+  ];
+
   return (
     <div className="h-screen">
       <DesignStudioHeader collectionName='Spring Summer 2023' />

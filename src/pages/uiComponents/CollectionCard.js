@@ -3,7 +3,7 @@ import { PencilSquareIcon, HeartIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import EditDeleteCollectionModal from './EditDeleteCollectionModal';
 
-const CollectionCard = ({ image1, image2, image3, collectionName, isUserCollection, url }) => {
+const CollectionCard = ({ image1, image2, image3, collectionName, isUserCollection, url, collection_id }) => {
   const [isHearted, setHearted] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -59,6 +59,7 @@ const CollectionCard = ({ image1, image2, image3, collectionName, isUserCollecti
         isOpen={isModalOpen} 
         onClose={handleModalClose} 
         collectionName={collectionName}
+        collection_id={collection_id}
       />
     </div>
    
