@@ -40,7 +40,7 @@ const CollectionHeader = ({ collectionName, username, avatarUrl }) => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <Menu.Items className="z-40 absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <Menu.Item className="hover:bg-gray-100">
                 <button className="flex items-center w-full px-4 py-2 text-left">
                   <PencilSquareIcon className="w-4 h-4 mr-2" />

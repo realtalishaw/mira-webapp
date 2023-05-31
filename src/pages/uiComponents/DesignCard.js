@@ -15,7 +15,7 @@ const DesignCard = ({ design, isOwner }) => {
   };
 
   return (
-    <div className="border border-gray-200 shadow-md p-4 rounded-lg w-72 h-72">
+    <div className="border border-gray-200 shadow-md p-4 rounded-lg w-72 h-72 hover:border-gray-500">
       <img src={design.image} alt={design.name} className="mb-2 rounded w-full h-3/4 object-cover" />
       <h3 className="font-semibold mb-2">{design.name}</h3>
 

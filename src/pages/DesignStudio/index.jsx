@@ -4,6 +4,7 @@ import Sidebar from '../uiComponents/Sidebar';
 import ImageHolder from '../uiComponents/ImageHolder';
 import { useContext } from 'react';
 import { DesignStudioContext } from '../../DesignStudioContext';
+import {  useParams } from 'react-router-dom';
 
 
 
@@ -13,10 +14,11 @@ const DesignStudio= () => {
   const images = [
     imageUrl
   ];
+  const { collection_name } = useParams();
 
   return (
     <div className="h-screen">
-      <DesignStudioHeader collectionName='Spring Summer 2023' />
+      <DesignStudioHeader collectionName={collection_name} />
 
       <div className="flex">
         <Sidebar />

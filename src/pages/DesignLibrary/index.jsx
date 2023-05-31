@@ -5,8 +5,8 @@ import UserHeader from '../uiComponents/UserHeader'
 import EmptyState from '../uiComponents/EmptyState';
 import NewCollectionModal from '../uiComponents/NewCollectionModal';
 import CollectionCard from '../uiComponents/CollectionCard';
-import { collectionsByUserID } from '../../graphql/queries';
-import { API, graphqlOperation } from 'aws-amplify';
+import { DataStore } from 'aws-amplify';
+import { Collection } from '../../models';
 
 const DesignLibrary = () => {
   const { user } = useContext(UserContext); // Access user context
@@ -15,17 +15,21 @@ const DesignLibrary = () => {
   useEffect(() => {
     const fetchCollections = async () => {
       try {
-        console.log("--------USERID-------", user.id)
-        const result = await API.graphql(
-          graphqlOperation(collectionsByUserID, { userID: user.id })
-        );
-       setCollections(result.data.collectionsByUserID.items);
+        const result = await DataStore.query(Collection, c => c.userID.eq(user.id));
+
+        setCollections(result);
       } catch (error) {
         console.error("Error", error);
       }
     };
   
     fetchCollections();
+  
+    // Clean up function to cancel subscription when component is unmounted
+    const subscription = DataStore.observe(Collection).subscribe(() => fetchCollections());
+  
+    return () => subscription.unsubscribe();
+  
   }, [user.id]);
   
 

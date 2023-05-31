@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { BellIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import { Auth } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
+import UserContext from '../../UserContext'
 
 const Header = () => {
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
+  const username = user.username
 
   const handleLogout = async () => {
     try {
@@ -23,7 +26,7 @@ const Header = () => {
       </div>
 
       <nav className="flex items-center hover:text-gray-500">
-        <a href="/DesignLibrary" className="mr-4">My Collections</a>
+        <a href={`/designlibrary/${username}`} className="mr-4">My Collections</a>
 
         <button className="btn btn-outline mx-2"><a href='/sharefeed'>
           Get Inspired ✨

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalCircleIcon, PencilSquareIcon, ShareIcon, LinkIcon } from '@heroicons/react/24/outline';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,9 +7,11 @@ import {
     faTwitter,
     faInstagram
 } from "@fortawesome/free-brands-svg-icons";
+import UserContext from '../../UserContext'
 
-const UserProfileHeader = ({ avatar, firstName, lastName, username, shareProfileLink, followers, following, likes, twitterLink, facebookLink, instagramLink, bio, url, isFollowing: isFollowingProp
-}) => {
+
+const UserProfileHeader = ({isFollowing: isFollowingProp}) => {
+    const { user } = useContext(UserContext);
     const [isFollowing, setIsFollowing] = useState(isFollowingProp);
 
     const handleFollowClick = () => {
@@ -21,12 +23,12 @@ const UserProfileHeader = ({ avatar, firstName, lastName, username, shareProfile
         <div className="flex flex-col items-center text-center ">
             <div className="avatar mt-4">
                 <div className="w-44 h-44 overflow-hidden rounded-full">
-                    <img src={avatar} alt="User Avatar" />
+                    <img src={user.avatar} alt="User Avatar" />
                 </div>
             </div>
 
             <div className="flex items-center mt-4 justify-center">
-                <h1 className="text-4xl font-bold">{firstName} {lastName}</h1>
+                <h1 className="text-4xl font-bold">{user.firstName} {user.lastName}</h1>
                 <Menu as="div" className="relative inline-block text-left ml-2">
                     <Menu.Button>
                         <EllipsisHorizontalCircleIcon className="w-8 h-8 " />
@@ -48,7 +50,7 @@ const UserProfileHeader = ({ avatar, firstName, lastName, username, shareProfile
                                 </a>
                             </Menu.Item>
                             <Menu.Item className="hover:bg-gray-100">
-                                <a href={shareProfileLink} className="flex items-center w-full px-4 py-2 text-left">
+                                <a href={`/@${user.username}`} className="flex items-center w-full px-4 py-2 text-left">
                                     <ShareIcon className="w-4 h-4 mr-2" />
                                     Share Profile
                                 </a>
@@ -59,20 +61,20 @@ const UserProfileHeader = ({ avatar, firstName, lastName, username, shareProfile
             </div>
 
             <div className="mt-2 text-base text-gray-500">
-                @{username}
+                @{user.username}
             </div>
 
             <div className="mt-4 flex w-1/4 h-12 pb-2">
                 <div className="flex-1">
-                    <div className="font-extrabold">{following}</div>
+                    <div className="font-extrabold">{user.following || 0}</div>
                     <div>Following</div>
                 </div>
                 <div className="border-l border-r pl-6 pr-6">
-                    <div className="font-extrabold">{followers}</div>
+                    <div className="font-extrabold">{user.followers || 0}</div>
                     <div>Followers</div>
                 </div>
                 <div className="flex-1">
-                    <div className="font-extrabold">{likes}</div>
+                    <div className="font-extrabold">{user.likes || 0}</div>
                     <div>Likes</div>
                 </div>
             </div>
@@ -83,22 +85,22 @@ const UserProfileHeader = ({ avatar, firstName, lastName, username, shareProfile
                 >
                     {isFollowing ? 'Following' : 'Follow'}
                 </button>
-                <a href={twitterLink}><FontAwesomeIcon icon={faTwitter} className="w-6 h-6 border border-black p-3 mx-2 rounded-lg hover:text-blue-300" /></a>
-                <a href={facebookLink}><FontAwesomeIcon icon={faFacebook} className="w-6 h-6 border border-black p-3 mx-2 rounded-lg hover:text-blue-400" /></a>
-                <a href={instagramLink}><FontAwesomeIcon icon={faInstagram} className="w-6 h-6 border border-black p-3 mx-2 rounded-lg hover:text-purple-600" /></a>
+                <a href={user.twitterLink}><FontAwesomeIcon icon={faTwitter} className="w-6 h-6 border border-black p-3 mx-2 rounded-lg hover:text-blue-300" /></a>
+                <a href={user.facebookLink}><FontAwesomeIcon icon={faFacebook} className="w-6 h-6 border border-black p-3 mx-2 rounded-lg hover:text-blue-400" /></a>
+                <a href={user.instagramLink}><FontAwesomeIcon icon={faInstagram} className="w-6 h-6 border border-black p-3 mx-2 rounded-lg hover:text-purple-600" /></a>
             </div>
 
             <div className="mt-4 w-[30%]">
-                {bio}
+                {user.bio}
             </div>
 
             <div className="mt-4 flex justify-center w-3/4">
-                <a href={url} className="flex items-center hover:text-lg ">
+                <a href={user.website} className="flex items-center hover:text-lg ">
                     <LinkIcon className="w-6 h-6 mr-2" />
-                    {url}
+                    {user.website}
                 </a>
             </div>
-           
+
         </div>
     );
 }

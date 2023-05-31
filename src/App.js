@@ -20,7 +20,7 @@ const App = () => {
           <Route path="/designlibrary/:username" element={<ProtectedElement><DesignLibrary /></ProtectedElement>} />
           <Route path="/collection/:collection_id" element={<ProtectedElement><CollectionPage /></ProtectedElement>} />
           <Route path="/sharefeed" element={<ShareFeed /> }/>
-          <Route path="/designstudio/:design_id" element={
+          <Route path="/designstudio/:collection_name/:design_id" element={
             <ProtectedElement>
               <DesignStudioProvider>
                 <DesignStudio />
@@ -28,9 +28,8 @@ const App = () => {
             </ProtectedElement>
           } />
           <Route path="/settings/:user_id" element={<ProtectedElement><Settings /></ProtectedElement>} />
-          <Route path="/@" element={<UserProfile />} />
+          <Route path="/:username" element={<UserProfile />} />
           <Route path='/help' element={<ProtectedElement><Help /></ProtectedElement>} />
-          <Route path='/test' element={<DesignStudio />} />
         </Routes>
       </Router>
     </UserProvider>

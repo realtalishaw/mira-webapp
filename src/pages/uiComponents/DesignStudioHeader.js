@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import { ChevronLeftIcon, BookmarkIcon, HeartIcon, ArrowDownIcon, LinkIcon, ShareIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const DesignStudioHeader = ({ collectionName }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate(-1); 
+  };
 
   const handleShareClick = () => {
     setDropdownOpen(!dropdownOpen);
@@ -12,7 +20,9 @@ const DesignStudioHeader = ({ collectionName }) => {
   return (
     <div className="flex justify-between items-center px-4 py-2 border-b">
       <div className="flex items-center">
-        <a href='/collection' className="text-xl"><ChevronLeftIcon className='h-8 w-8 text-gray-900'/> </a>
+      <button onClick={handleBackClick} className="text-xl">
+          <ChevronLeftIcon className='h-8 w-8 text-gray-900'/> 
+        </button>
         <span className="ml-4 text-lg">{collectionName}</span>
         <HistoryOutlinedIcon className="text-gray-500 ml-6 hover:text-black" /><span className="text-sm text-gray-400">undo</span>
       </div>

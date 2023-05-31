@@ -16,24 +16,6 @@ const CollectionPage = () => {
   const [collection, setCollection] = useState(null);
   const [designs, setDesigns] = useState([]);
 
-  const newDesign = async (event) => {
-    event.preventDefault();
-    const designInput = {
-      collectionID: collection_id,
-      userID: user.id,
-      name: 'untitled',
-    };
-
-    try {
-      const result = await DataStore.save(new Design(designInput));
-      console.log("Design Created: ", result);
-      setDesigns([...designs, result]); // add the new design to the list
-      navigate(`/designstudio/${result.id}`);
-    } catch (error) {
-      console.error("Error creating new design: ", error);
-    }
-  }
-
   useEffect(() => {
     const loadCollectionAndDesigns = async () => {
       const loadedCollection = await DataStore.query(Collection, collection_id);
@@ -47,13 +29,33 @@ const CollectionPage = () => {
   
     loadCollectionAndDesigns();
   }, [collection_id]);
+
+  const newDesign = async (event) => {
+    event.preventDefault();
+    const designInput = {
+      collectionID: collection_id,
+      userID: user.id,
+      designName: 'untitled',
+    };
+
+    try {
+      const result = await DataStore.save(new Design(designInput));
+      console.log("Design Created: ", result);
+      setDesigns([...designs, result]); // add the new design to the list
+      navigate(`/designstudio/${collection?.collectionName}/${result.id}`);
+    } catch (error) {
+      console.error("Error creating new design: ", error);
+    }
+  }
+
+
   
 
   return (
     <div>
       <Header />
       <CollectionHeader
-        collectionName={collection?.name}
+        collectionName={collection?.collectionName}
         username={user.username}
         avatarUrl={user.avatar}
         isPublic={true}
@@ -61,7 +63,7 @@ const CollectionPage = () => {
       <div className='grid grid-cols-4 gap-6 w-3/4 mx-auto'>
         <EmptyState onNewCollectionClick={newDesign} title='New Design' />
         {designs.map(design => (
-          <DesignCard key={design.id} design={{ name: design.name, image: design.designImage }} isOwner={true} />
+          <a href={`/designstudio/${collection?.collectionName}/${design.id}`}><DesignCard key={design.id} design={{ name: design.designName || 'Untitled', image: design.designImage }} isOwner={true} /></a>
         ))}
       </div>
     </div>

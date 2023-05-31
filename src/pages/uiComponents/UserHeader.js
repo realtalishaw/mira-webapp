@@ -1,6 +1,7 @@
 import React from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalCircleIcon, PencilSquareIcon, ShareIcon } from '@heroicons/react/24/outline';
+import { Link } from 'react-router-dom';
 
 const UserHeader = ({ avatar, firstName, lastName, username, shareProfileLink }) => {
   return (
@@ -46,7 +47,7 @@ const UserHeader = ({ avatar, firstName, lastName, username, shareProfileLink })
       </div>
 
       <div className="mt-2 text-base text-gray-500">
-        @{username}
+      <Link to={`/@${username}`} >@{username}</Link>
       </div>
     </div>
   );
