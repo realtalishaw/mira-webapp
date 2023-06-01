@@ -3,13 +3,26 @@ import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalCircleIcon, PencilSquareIcon, ShareIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 
+ 
+
+
 const UserHeader = ({ avatar, firstName, lastName, username, shareProfileLink }) => {
   return (
     <div className="flex flex-col items-center">
-      <div className="avatar mt-4">
-        <div className="w-44 h-44 overflow-hidden rounded-full">
-          <img src={avatar} alt="User Avatar" />
-        </div>
+      <div className="mt-4">
+        {avatar ?
+        <div className='avatar'>
+          <div className="w-24 rounded-xl">
+          <img className="avatar" src={avatar} alt="User Avatar" /> 
+          </div>
+          </div>
+          : 
+          <div className="avatar placeholder">
+            <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
+              <span className="text-3xl">{firstName.charAt(0)}</span>
+            </div>
+          </div>
+        }
       </div>
 
       <div className="flex items-center mt-4">
@@ -30,7 +43,7 @@ const UserHeader = ({ avatar, firstName, lastName, username, shareProfileLink })
           >
             <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <Menu.Item className="hover:bg-gray-100">
-                <a href="/settings" className="flex items-center w-full px-4 py-2 text-left">
+                <a href={`/settings/${username}`} className="flex items-center w-full px-4 py-2 text-left">
                   <PencilSquareIcon className="w-4 h-4 mr-2" />
                   Edit Profile
                 </a>

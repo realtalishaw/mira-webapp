@@ -1,16 +1,42 @@
 import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
-import ImageCard from './ImageCard'; // Ensure you have this ImageCard component created
+import ImageCard from './ImageCard'; 
+import { useDropzone } from 'react-dropzone';
+import { Storage } from 'aws-amplify';
+import { useState } from 'react';
 
 const Uploads = () => {
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [images, setImages] = useState([]);
 
-    // We'll have to define the function handleUpload that takes care of the file upload logic
-    const handleUpload = (event) => {
-        // upload logic here
+    const onDrop = (acceptedFiles) => {
+        console.log("Files dropped:", acceptedFiles);
+        if (acceptedFiles[0].size > 1000000) {
+            // compress file
+        } else {
+            setSelectedFile(acceptedFiles[0]);
+            handleUpload(acceptedFiles[0]);
+        }
+    };
+
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+    const handleUpload = async (file) => {
+        console.log("Uploading file:", file); // Add this
+        console.log("attempting to upload....")
+        try {
+            const result = await Storage.put(file.name, file);
+            const url = await Storage.get(file.name); // gets the signed url
+            console.log(url)
+            setImages(prevImages => [...prevImages, url]); 
+        } catch (error) {
+            console.error('Error uploading file: ', error);
+        }
     };
 
     return (
         <div className="w-full p-4">
-            <div className="border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center p-4 cursor-pointer hover:bg-gray-300 bg-white" onClick={handleUpload}>
+            <div {...getRootProps()} className="border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center p-4 cursor-pointer hover:bg-gray-300 bg-white">
+                <input {...getInputProps()} />
                 <CloudArrowUpIcon className="h-10 w-10 text-gray-500" />
                 <p className="mt-2">Drag and Drop or click to upload</p>
             </div>
@@ -22,26 +48,16 @@ const Uploads = () => {
                     className="mt-1 p-2 w-full h-20 rounded-md border border-gray-300"
                     placeholder="What do you want to design?"
                 />
-                <button className="btn btn-outline mt-2">Create</button>
+                                <button className="btn btn-outline mt-2">Create</button>
             </div>
             <div className="mt-4 grid grid-cols-2 gap-4">
-                {/* This is a placeholder. You would replace this part with a mapping function 
-                that renders ImageCard for each uploaded image */}
-                <div className="rounded-lg shadow-lg mr-2 w-[144px]">
-                    <img src='https://via.placeholder.com/15' alt="" className="w-full h-full object-cover" />
-                </div>
-                <div className="rounded-lg shadow-lg mr-2 w-[144px]">
-                    <img src='https://via.placeholder.com/15' alt="" className="w-full h-full object-cover" />
-                </div>
-                <div className="rounded-lg shadow-lg mr-2 w-[144px]">
-                    <img src='https://via.placeholder.com/15' alt="" className="w-full h-full object-cover" />
-                </div>
-                <div className="rounded-lg shadow-lg mr-2 w-[144px]">
-                    <img src='https://via.placeholder.com/15' alt="" className="w-full h-full object-cover" />
-                </div>
+                {images.map((image, index) => (
+                    <ImageCard key={index} src={image} />
+                ))}
             </div>
         </div>
     );
 };
 
 export default Uploads;
+

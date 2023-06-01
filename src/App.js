@@ -27,7 +27,7 @@ const App = () => {
               </DesignStudioProvider>
             </ProtectedElement>
           } />
-          <Route path="/settings/:user_id" element={<ProtectedElement><Settings /></ProtectedElement>} />
+          <Route path="/settings/:username" element={<ProtectedElement><Settings /></ProtectedElement>} />
           <Route path="/:username" element={<UserProfile />} />
           <Route path='/help' element={<ProtectedElement><Help /></ProtectedElement>} />
         </Routes>

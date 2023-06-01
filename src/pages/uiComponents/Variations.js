@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import VariationColorPicker from './VariationColorPicker';
 import PatternSelect from './PatternSelect';
+import { DesignStudioContext } from '../../DesignStudioContext';
 
 const Variations = () => {
+  const { generateImage } = useContext(DesignStudioContext);
   const [colors, setColors] = useState(['#000000']);
   const [prompt, setPrompt] = useState('');
   const [pattern, setPattern] = useState('none');
@@ -34,6 +36,14 @@ const Variations = () => {
   const removeColor = (index) => {
     setColors(colors.filter((_, i) => i !== index));
   };
+
+  const generateVariation = () => {
+    const colorsString = colors.join(', ');
+    const patternName = pattern ? pattern.name : 'none';
+    const variationString = `Prompt: ${prompt}, Colors: ${colorsString}, Pattern: ${patternName}`;
+   generateImage(variationString);
+  };
+  
   
   const patterns = [
     {
@@ -87,7 +97,7 @@ const Variations = () => {
   <PatternSelect patterns={patterns} selectedPattern={pattern} setSelectedPattern={setPattern} />
 </div>
       <button className="btn btn-outline mt-2" onClick={resetFields}>Reset</button>
-      <button className="btn mt-2 mx-2">Generate Variation</button>
+      <button className="btn mt-2 mx-2" onClick={generateVariation}>Generate Variation</button>
     </div>
   );
 };

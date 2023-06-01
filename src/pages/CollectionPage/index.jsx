@@ -51,8 +51,6 @@ const CollectionPage = () => {
   }
 
 
-  console.log("FEtched designs are:", designs)
-
   return (
     <div>
       <Header />

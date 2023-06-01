@@ -1,11 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { useContext } from 'react';
 import { DesignStudioContext } from '../../DesignStudioContext';
 
 const ImageHolder = ({ images }) => {
-  const { selectedImage, setSelectedImage } = useContext(DesignStudioContext); // Fetch selectedImage here
+  const { selectedImage, setSelectedImage, setCanvasContext } = useContext(DesignStudioContext); // Fetch selectedImage here
   const [isTrayOpen, setIsTrayOpen] = useState(true);
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedImage) {
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      setCanvasContext(context);
+      let img = new Image();
+      img.onload = function(){
+          canvas.width = canvas.clientWidth;
+          canvas.height = canvas.clientHeight;
+          context.drawImage(img, 0, 0, canvas.width, canvas.height);
+      }
+      img.src = selectedImage;
+    }
+  }, [selectedImage]);
 
   if (!images?.length) {
     return null; // Or return a loading spinner
@@ -22,10 +38,9 @@ const ImageHolder = ({ images }) => {
   return (
     <div className="flex flex-col items-center h-[calc(100vh-90px)] justify-center">
       {/* Selected Image */}
-      <div
-        className="bg-center bg-cover w-1/2 h-[95%] m-2 relative"
-        style={{ backgroundImage: `url(${selectedImage})` }}
-      ></div>
+      <div style={{width: '50%', height: '95%', position: 'relative'}} className="m-2">
+        <canvas ref={canvasRef} className="w-full h-full absolute top-0 left-0"></canvas>
+      </div>
 
       {/* Tray Toggle Button */}
       <button

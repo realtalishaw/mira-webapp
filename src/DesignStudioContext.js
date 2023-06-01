@@ -6,6 +6,8 @@ export const DesignStudioContext = createContext();
 export const DesignStudioProvider = ({ children }) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [canvasContext, setCanvasContext] = useState(null);  // Added this line
+
 
   const generateImage = async (text) => {
     try {
@@ -31,10 +33,14 @@ export const DesignStudioProvider = ({ children }) => {
       console.error(err);
     }
   };
+
+  
+  
+
   
   
   return (
-    <DesignStudioContext.Provider value={{ imageUrl, generateImage, selectedImage, setSelectedImage }}>
+    <DesignStudioContext.Provider value={{ imageUrl, generateImage, selectedImage, setSelectedImage, canvasContext, setCanvasContext }}>
       {children}
     </DesignStudioContext.Provider>
   );
