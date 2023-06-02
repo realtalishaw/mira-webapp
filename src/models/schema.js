@@ -351,7 +351,7 @@ export const schema = {
                 "textures": {
                     "name": "textures",
                     "isArray": true,
-                    "type": "AWSURL",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
@@ -359,7 +359,7 @@ export const schema = {
                 "patterns": {
                     "name": "patterns",
                     "isArray": true,
-                    "type": "AWSURL",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
@@ -367,7 +367,7 @@ export const schema = {
                 "inspiration": {
                     "name": "inspiration",
                     "isArray": true,
-                    "type": "AWSURL",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
@@ -510,7 +510,7 @@ export const schema = {
                 "designImage": {
                     "name": "designImage",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSURL",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -860,6 +860,14 @@ export const schema = {
                         ]
                     }
                 },
+                "uploads": {
+                    "name": "uploads",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1102,5 +1110,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "3f822ffd7ff1960c2b7688349d80de4b"
+    "version": "87f1b31c0d77319fbc865fe9f6691e8d"
 };

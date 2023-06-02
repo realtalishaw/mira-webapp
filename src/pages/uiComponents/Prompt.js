@@ -7,11 +7,15 @@ const Prompt = () => {
   const [view, setView] = useState('front');
   const [prompt, setPrompt] = useState('');
   const [negativePrompt, setNegativePrompt] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleCreate = async () => {
     // Combine the inputs into a single string
+    setLoading(true);
     const designText = `${view} ${prompt} ${negativePrompt}`;
-    generateImage(designText);
+    console.log("Creating......")
+    await generateImage(designText);
+   setLoading(false);
   };
 
   return (
@@ -40,9 +44,13 @@ const Prompt = () => {
         value={negativePrompt}
         onChange={e => setNegativePrompt(e.target.value)}
       />
-      <button className='mt-4 btn btn-outline ' onClick={handleCreate}>
-        Create
-      </button>
+        <button 
+      className={`mt-4 btn ${loading ? 'loading' : 'btn-outline'}`} 
+      onClick={handleCreate}
+      disabled={loading} // Optional: disable the button while loading
+    >
+      {loading ? 'Loading...' : 'Create'}
+    </button>
     </div>
   );
 };

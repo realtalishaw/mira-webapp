@@ -6,11 +6,180 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import {
+  Badge,
+  Button,
+  Divider,
+  Flex,
+  Grid,
+  Icon,
+  ScrollView,
+  Text,
+  TextField,
+  useTheme,
+} from "@aws-amplify/ui-react";
 import { getOverrideProps } from "@aws-amplify/ui-react/internal";
 import { User } from "../models";
 import { fetchByPath, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button
+            size="small"
+            variation="link"
+            isDisabled={hasError}
+            onClick={addItem}
+          >
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function UserCreateForm(props) {
   const {
     clearOnSuccess = true,
@@ -34,6 +203,7 @@ export default function UserCreateForm(props) {
     twitterLink: "",
     email: "",
     profileUrl: "",
+    uploads: [],
   };
   const [avatar, setAvatar] = React.useState(initialValues.avatar);
   const [firstName, setFirstName] = React.useState(initialValues.firstName);
@@ -52,6 +222,7 @@ export default function UserCreateForm(props) {
   );
   const [email, setEmail] = React.useState(initialValues.email);
   const [profileUrl, setProfileUrl] = React.useState(initialValues.profileUrl);
+  const [uploads, setUploads] = React.useState(initialValues.uploads);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setAvatar(initialValues.avatar);
@@ -65,8 +236,12 @@ export default function UserCreateForm(props) {
     setTwitterLink(initialValues.twitterLink);
     setEmail(initialValues.email);
     setProfileUrl(initialValues.profileUrl);
+    setUploads(initialValues.uploads);
+    setCurrentUploadsValue("");
     setErrors({});
   };
+  const [currentUploadsValue, setCurrentUploadsValue] = React.useState("");
+  const uploadsRef = React.createRef();
   const validations = {
     avatar: [],
     firstName: [{ type: "Required" }],
@@ -79,6 +254,7 @@ export default function UserCreateForm(props) {
     twitterLink: [],
     email: [{ type: "Required" }, { type: "Email" }],
     profileUrl: [{ type: "Required" }],
+    uploads: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -117,6 +293,7 @@ export default function UserCreateForm(props) {
           twitterLink,
           email,
           profileUrl,
+          uploads,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -182,6 +359,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.avatar ?? value;
@@ -216,6 +394,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.firstName ?? value;
@@ -250,6 +429,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.lastName ?? value;
@@ -284,6 +464,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.username ?? value;
@@ -318,6 +499,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.bio ?? value;
@@ -352,6 +534,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.website ?? value;
@@ -386,6 +569,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.facebookLink ?? value;
@@ -420,6 +604,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.instagramLink ?? value;
@@ -454,6 +639,7 @@ export default function UserCreateForm(props) {
               twitterLink: value,
               email,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.twitterLink ?? value;
@@ -488,6 +674,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email: value,
               profileUrl,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -522,6 +709,7 @@ export default function UserCreateForm(props) {
               twitterLink,
               email,
               profileUrl: value,
+              uploads,
             };
             const result = onChange(modelFields);
             value = result?.profileUrl ?? value;
@@ -536,6 +724,59 @@ export default function UserCreateForm(props) {
         hasError={errors.profileUrl?.hasError}
         {...getOverrideProps(overrides, "profileUrl")}
       ></TextField>
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
+          if (onChange) {
+            const modelFields = {
+              avatar,
+              firstName,
+              lastName,
+              username,
+              bio,
+              website,
+              facebookLink,
+              instagramLink,
+              twitterLink,
+              email,
+              profileUrl,
+              uploads: values,
+            };
+            const result = onChange(modelFields);
+            values = result?.uploads ?? values;
+          }
+          setUploads(values);
+          setCurrentUploadsValue("");
+        }}
+        currentFieldValue={currentUploadsValue}
+        label={"Uploads"}
+        items={uploads}
+        hasError={errors?.uploads?.hasError}
+        errorMessage={errors?.uploads?.errorMessage}
+        setFieldValue={setCurrentUploadsValue}
+        inputFieldRef={uploadsRef}
+        defaultFieldValue={""}
+      >
+        <TextField
+          label="Uploads"
+          isRequired={false}
+          isReadOnly={false}
+          value={currentUploadsValue}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.uploads?.hasError) {
+              runValidationTasks("uploads", value);
+            }
+            setCurrentUploadsValue(value);
+          }}
+          onBlur={() => runValidationTasks("uploads", currentUploadsValue)}
+          errorMessage={errors.uploads?.errorMessage}
+          hasError={errors.uploads?.hasError}
+          ref={uploadsRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "uploads")}
+        ></TextField>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

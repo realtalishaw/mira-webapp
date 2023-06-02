@@ -2,11 +2,33 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { useContext } from 'react';
 import { DesignStudioContext } from '../../DesignStudioContext';
+import { Storage } from '@aws-amplify/storage';
+import { Image } from '@aws-amplify/ui-react';
 
-const ImageHolder = ({ images }) => {
-  const { selectedImage, setSelectedImage, setCanvasContext } = useContext(DesignStudioContext); // Fetch selectedImage here
+const ImageHolder = ({ imageKeys }) => {
+  const { selectedImage, setSelectedImage, setCanvasContext } = useContext(DesignStudioContext);
   const [isTrayOpen, setIsTrayOpen] = useState(true);
   const canvasRef = useRef(null);
+  const [imageUrls, setImageUrls] = useState([]);
+
+  useEffect(() => {
+    console.log("just waiting on something to happen")
+    const fetchImages = async () => {
+      if (imageKeys) {
+        let urls = await Promise.all(imageKeys.map(key => Storage.get(key, {
+          level: 'public'
+        })));
+        console.log('Fetched URLs:', urls); // Log the URLs
+        setImageUrls(urls);
+      }
+    }
+
+    // Call the function and handle possible errors
+    fetchImages().catch(err => console.error('Error fetching images:', err));
+  }, [imageKeys]);
+
+
+
 
   useEffect(() => {
     if (selectedImage) {
@@ -14,21 +36,21 @@ const ImageHolder = ({ images }) => {
       const context = canvas.getContext('2d');
       setCanvasContext(context);
       let img = new Image();
-      img.onload = function(){
-          canvas.width = canvas.clientWidth;
-          canvas.height = canvas.clientHeight;
-          context.drawImage(img, 0, 0, canvas.width, canvas.height);
+      img.onload = function () {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+        context.drawImage(img, 0, 0, canvas.width, canvas.height);
       }
       img.src = selectedImage;
     }
   }, [selectedImage]);
 
-  if (!images?.length) {
+  if (!imageUrls?.length) {
     return null; // Or return a loading spinner
   }
- 
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
+
+  const handleImageClick = (url) => {
+    setSelectedImage(url);
   };
 
   const toggleTray = () => {
@@ -38,7 +60,7 @@ const ImageHolder = ({ images }) => {
   return (
     <div className="flex flex-col items-center h-[calc(100vh-90px)] justify-center">
       {/* Selected Image */}
-      <div style={{width: '50%', height: '95%', position: 'relative'}} className="m-2">
+      <div style={{ width: '50%', height: '95%', position: 'relative' }} className="m-2">
         <canvas ref={canvasRef} className="w-full h-full absolute top-0 left-0"></canvas>
       </div>
 
@@ -54,14 +76,17 @@ const ImageHolder = ({ images }) => {
       <div
         className={`w-3/4 rounded-t-md bg-white shadow-lg border border-gray-100 p-4 flex justify-between items-center transition-all duration-500 ease-in-out transform ${isTrayOpen ? 'translate-y-0' : ' hidden'}`}
       >
-        {images.slice(0, 4).map((image, idx) => (
-          <img
+        {imageUrls.slice(0, 4).map((url, idx) => (
+          <div
             key={idx}
-            src={image}
-            alt=""
-            className={`h-24 rounded w-auto cursor-pointer ${image === selectedImage ? 'ring ring-gray-500' : ''}`}
-            onClick={() => handleImageClick(image)}
-          />
+            className={`h-24 rounded w-auto cursor-pointer ${url === selectedImage ? 'ring ring-gray-500' : ''}`}
+            onClick={() => handleImageClick(url)}
+          >
+            <Image
+              src={url}
+              alt=""
+            />
+          </div>
         ))}
 
       </div>

@@ -30,9 +30,9 @@ type MoodBoard @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String!
   colors: [String]
-  textures: [AWSURL]
-  patterns: [AWSURL]
-  inspiration: [AWSURL]
+  textures: [String]
+  patterns: [String]
+  inspiration: [String]
   userID: ID! @index(name: "byUser")
   createdAt: AWSDate
 }
@@ -79,5 +79,6 @@ type User @model @auth(rules: [{allow: public}]) {
   Likes: [Like] @hasMany(indexName: "byUser", fields: ["id"])
   Followers: [Followers] @manyToMany(relationName: "UserFollowers")
   followings: [Following] @manyToMany(relationName: "FollowingUser")
+  uploads: [String]
 }
  

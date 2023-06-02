@@ -23,7 +23,7 @@ const DesignStudio = () => {
 
         {/* Right-side workspace */}
         <div className="w-full" >
-          <ImageHolder images={imageUrl} />
+          <ImageHolder imageKeys={images} />
         </div>
       </div>
     </div>

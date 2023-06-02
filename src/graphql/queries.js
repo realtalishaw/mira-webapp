@@ -783,6 +783,7 @@ export const getUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      uploads 
       createdAt
       updatedAt
       _version

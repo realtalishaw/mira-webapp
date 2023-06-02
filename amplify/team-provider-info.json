@@ -19,7 +19,15 @@
         "s3mirawebappstorage": {}
       },
       "function": {
-        "mirawebapp34de6beb": {}
+        "mirawebapp34de6beb": {},
+        "downloadImages": {
+          "deploymentBucketName": "amplify-amplify5c12edc8c97b4-staging-142735-deployment",
+          "s3Key": "amplify-builds/downloadImages-6e52764c30692b6f4378-build.zip"
+        }
+      },
+      "api": {
+        "mirawebapp": {},
+        "downloadImage": {}
       }
     }
   }

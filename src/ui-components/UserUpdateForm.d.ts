@@ -25,6 +25,7 @@ export declare type UserUpdateFormInputValues = {
     twitterLink?: string;
     email?: string;
     profileUrl?: string;
+    uploads?: string[];
 };
 export declare type UserUpdateFormValidationValues = {
     avatar?: ValidationFunction<string>;
@@ -38,6 +39,7 @@ export declare type UserUpdateFormValidationValues = {
     twitterLink?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
     profileUrl?: ValidationFunction<string>;
+    uploads?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserUpdateFormOverridesProps = {
@@ -53,6 +55,7 @@ export declare type UserUpdateFormOverridesProps = {
     twitterLink?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
     profileUrl?: PrimitiveOverrideProps<TextFieldProps>;
+    uploads?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type UserUpdateFormProps = React.PropsWithChildren<{
     overrides?: UserUpdateFormOverridesProps | undefined | null;

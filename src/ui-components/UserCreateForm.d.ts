@@ -24,6 +24,7 @@ export declare type UserCreateFormInputValues = {
     twitterLink?: string;
     email?: string;
     profileUrl?: string;
+    uploads?: string[];
 };
 export declare type UserCreateFormValidationValues = {
     avatar?: ValidationFunction<string>;
@@ -37,6 +38,7 @@ export declare type UserCreateFormValidationValues = {
     twitterLink?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
     profileUrl?: ValidationFunction<string>;
+    uploads?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserCreateFormOverridesProps = {
@@ -52,6 +54,7 @@ export declare type UserCreateFormOverridesProps = {
     twitterLink?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
     profileUrl?: PrimitiveOverrideProps<TextFieldProps>;
+    uploads?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type UserCreateFormProps = React.PropsWithChildren<{
     overrides?: UserCreateFormOverridesProps | undefined | null;

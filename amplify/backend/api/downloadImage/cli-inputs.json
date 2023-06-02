@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/download": {
+      "name": "/download",
+      "lambdaFunction": "downloadImages",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}
