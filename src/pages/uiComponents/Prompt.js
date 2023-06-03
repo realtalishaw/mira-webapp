@@ -51,7 +51,7 @@ const Prompt = () => {
     >
       {loading ? 'Loading...' : 'Create'}
     </button>
-    </div>
+        </div>
   );
 };
 

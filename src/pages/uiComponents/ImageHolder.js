@@ -3,7 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { useContext } from 'react';
 import { DesignStudioContext } from '../../DesignStudioContext';
 import { Storage } from '@aws-amplify/storage';
-import { Image } from '@aws-amplify/ui-react';
+
 
 const ImageHolder = ({ imageKeys }) => {
   const { selectedImage, setSelectedImage, setCanvasContext } = useContext(DesignStudioContext);
@@ -12,11 +12,11 @@ const ImageHolder = ({ imageKeys }) => {
   const [imageUrls, setImageUrls] = useState([]);
 
   useEffect(() => {
-    console.log("just waiting on something to happen")
     const fetchImages = async () => {
       if (imageKeys) {
+        console.log('Image Keys:', imageKeys)
         let urls = await Promise.all(imageKeys.map(key => Storage.get(key, {
-          level: 'public'
+          level: ''
         })));
         console.log('Fetched URLs:', urls); // Log the URLs
         setImageUrls(urls);
@@ -82,10 +82,8 @@ const ImageHolder = ({ imageKeys }) => {
             className={`h-24 rounded w-auto cursor-pointer ${url === selectedImage ? 'ring ring-gray-500' : ''}`}
             onClick={() => handleImageClick(url)}
           >
-            <Image
-              src={url}
-              alt=""
-            />
+          <img src={url} alt={idx} />
+
           </div>
         ))}
 

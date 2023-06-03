@@ -5,6 +5,19 @@
       "name": "/download",
       "lambdaFunction": "downloadImages",
       "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    },
+    "/test": {
+      "name": "/test",
+      "lambdaFunction": "downloadImages",
+      "permissions": {
         "setting": "open"
       }
     }

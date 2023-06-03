@@ -9,7 +9,8 @@
       "UnauthRoleName": "amplify-amplify5c12edc8c97b4-staging-142735-unauthRole",
       "StackName": "amplify-amplify5c12edc8c97b4-staging-142735",
       "StackId": "arn:aws:cloudformation:us-east-1:438420706355:stack/amplify-amplify5c12edc8c97b4-staging-142735/a0398240-fc9a-11ed-8d97-0afcc3d80d31",
-      "AmplifyAppId": "d1pmnoa5emg493"
+      "AmplifyAppId": "d1pmnoa5emg493",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-amplify5c12edc8c97b4-staging-142735-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
@@ -22,7 +23,7 @@
         "mirawebapp34de6beb": {},
         "downloadImages": {
           "deploymentBucketName": "amplify-amplify5c12edc8c97b4-staging-142735-deployment",
-          "s3Key": "amplify-builds/downloadImages-6e52764c30692b6f4378-build.zip"
+          "s3Key": "amplify-builds/downloadImages-765530435562766a6d33-build.zip"
         }
       },
       "api": {

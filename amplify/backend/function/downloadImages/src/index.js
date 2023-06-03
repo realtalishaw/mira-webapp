@@ -30,7 +30,7 @@ exports.handler = async (event) => {
         const pass = new stream.PassThrough();
         const params = {
             Bucket: bucketName,
-            Key: filename, // use the original filename as the key
+            Key: `public/${filename}`,
             Body: pass,
             ContentType: 'image/png'  // replace with the actual content type of your images
         };
@@ -39,14 +39,15 @@ exports.handler = async (event) => {
 
         // Upload the image to S3
         const result = await s3.upload(params).promise();
-        console.log(result);
-        return {
+        const respond = {
             statusCode: 200,
             body: JSON.stringify({
                 message: 'Image uploaded successfully!',
                 s3Object: result
             })
         };
+        console.log("Returned", respond)
+        return respond;
     } catch (err) {
         console.error(err);
         return {
@@ -58,3 +59,4 @@ exports.handler = async (event) => {
         };
     }
 };
+

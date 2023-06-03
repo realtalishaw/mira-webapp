@@ -19,6 +19,7 @@ const Uploads = () => {
             if (user && user.uploads) {
                 const userFileURLs = await Promise.all(user.uploads.map(async (upload) => {
                     const url = await Storage.get(upload);
+                    console.log(url)
                     return url;
                 }));
                 setFileURLs(userFileURLs);
