@@ -41,6 +41,7 @@ const ImageHolder = ({ imageKeys }) => {
         canvas.height = canvas.clientHeight;
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
       }
+      img.crossOrigin = "anonymous";  // Set crossOrigin before setting src
       img.src = selectedImage;
     }
   }, [selectedImage]);
@@ -82,7 +83,7 @@ const ImageHolder = ({ imageKeys }) => {
             className={`h-24 rounded w-auto cursor-pointer ${url === selectedImage ? 'ring ring-gray-500' : ''}`}
             onClick={() => handleImageClick(url)}
           >
-          <img src={url} alt={idx} />
+            <img src={url} alt={idx} className='max-h-24 w-auto' />
 
           </div>
         ))}

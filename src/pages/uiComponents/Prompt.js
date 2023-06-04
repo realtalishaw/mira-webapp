@@ -1,6 +1,23 @@
-import React, { useState } from 'react';
-import { useContext } from 'react';
+import React, { useState, useReducer, useContext } from 'react';
 import { DesignStudioContext } from '../../DesignStudioContext';
+
+// Initial state for action history
+const initialState = {
+  actions: []
+};
+
+// Action history reducer function
+const actionHistoryReducer = (state, action) => {
+  switch (action.type) {
+    case 'CREATE_DESIGN':
+      return {
+        ...state,
+        actions: [...state.actions, action.payload],
+      };
+    default:
+      return state;
+  }
+};
 
 const Prompt = () => {
   const { generateImage } = useContext(DesignStudioContext);
@@ -8,6 +25,9 @@ const Prompt = () => {
   const [prompt, setPrompt] = useState('');
   const [negativePrompt, setNegativePrompt] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // Using reducer for action history state management
+  const [state, dispatch] = useReducer(actionHistoryReducer, initialState);
 
   const handleCreate = async () => {
     // Combine the inputs into a single string
@@ -15,8 +35,20 @@ const Prompt = () => {
     const designText = `${view} ${prompt} ${negativePrompt}`;
     console.log("Creating......")
     await generateImage(designText);
-   setLoading(false);
+
+    // Dispatch the action to the reducer
+    dispatch({ 
+      type: 'CREATE_DESIGN',
+      payload: {
+        time: new Date(),
+        action: 'CREATE_DESIGN',
+        description: `Created a design with view: ${view}, prompt: ${prompt}, negative prompt: ${negativePrompt}`,
+      },
+    });
+
+    setLoading(false);
   };
+
 
   return (
     <div className='p-4'>

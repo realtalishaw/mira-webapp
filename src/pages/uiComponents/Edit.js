@@ -4,18 +4,34 @@ import { DesignStudioContext } from '../../DesignStudioContext';
 import { Storage } from '@aws-amplify/storage'; 
 
 const Edit = () => {
-  const { canvasContext } = useContext(DesignStudioContext);
+  const { canvasContext, actionHistory } = useContext(DesignStudioContext);
   const [drawing, setDrawing] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [lastPosition, setLastPosition] = useState({ x: 0, y: 0 });
   const brushSizeRef = useRef(null);
   const [currentCollapsible, setCurrentCollapsible] = useState("Brush over the Image");
+  const [lastPrompt, setLastPrompt] = useState("");
+const [currentPrompt, setCurrentPrompt] = useState("");
 
+useEffect(() => {
+  // check if actionHistory has at least one action before setting currentPrompt
+  if (actionHistory.length > 0) {
+    setCurrentPrompt(actionHistory[actionHistory.length - 1].payload);
+  }
+  
+  // check if actionHistory has at least two actions before setting lastPrompt
+  if (actionHistory.length > 1) {
+    setLastPrompt(actionHistory[actionHistory.length - 2].payload);
+  }
+}, [actionHistory]);
   const updateMousePosition = (ev) => {
     const { offsetX, offsetY } = ev;
-    setLastPosition(mousePosition);
+    if (drawing) {
+      setLastPosition(mousePosition);
+    }
     setMousePosition({ x: offsetX, y: offsetY });
   };
+  
 
   const startDraw = (ev) => {
     setDrawing(true);
@@ -27,20 +43,28 @@ const Edit = () => {
   };
 
   const drawLine = (ev) => {
-    if (!drawing) return;
+    if (!drawing) {
+      setLastPosition(null);
+      return;
+    }
     updateMousePosition(ev);
+  
+    if (lastPosition) {
+      canvasContext.lineWidth = brushSizeRef.current.value;
+      canvasContext.lineCap = 'round';
+      canvasContext.globalCompositeOperation = 'destination-out'; // This will create the eraser effect
+  
+      canvasContext.beginPath();
+      canvasContext.moveTo(lastPosition.x, lastPosition.y);
+      canvasContext.lineTo(mousePosition.x, mousePosition.y);
+      canvasContext.stroke();
+  
+      canvasContext.globalCompositeOperation = 'source-over'; // This will return to the default drawing mode
+    }
+};
 
-    canvasContext.lineWidth = brushSizeRef.current.value;
-    canvasContext.lineCap = 'round';
-    canvasContext.strokeStyle = 'rgba(255, 0, 0)';
-    canvasContext.globalAlpha = 0.3;
-
-
-    canvasContext.beginPath();
-    canvasContext.moveTo(lastPosition.x, lastPosition.y);
-    canvasContext.lineTo(mousePosition.x, mousePosition.y);
-    canvasContext.stroke();
-  };
+  
+  
 
   const handleBrushSizeChange = (event) => {
     if (canvasContext) {
@@ -53,45 +77,35 @@ const Edit = () => {
       canvasContext.clearRect(0, 0, canvasContext.canvas.width, canvasContext.canvas.height);
     }
   };
+  const handleGenerate = () => {
+    console.log("Last Prompt: ", lastPrompt);
+    console.log("Current Prompt: ", currentPrompt);
+    // Handle generate new results
+  };
 
-const handleContinue = () => {
-
+  const handleContinue = () => {
     setCurrentCollapsible("Describe your edit");
   };
 
   const handleEdit = async () => {
     if (!canvasContext) return;
-    // create a blank image with the same dimensions as the canvas
-    let imgData = canvasContext.createImageData(canvasContext.canvas.width, canvasContext.canvas.height);
-    // loop over every pixel in the canvas
-    for(let i=0; i<imgData.data.length; i+=4) {
-      // if the pixel is not painted over, set the alpha to 0 (making it transparent)
-      if(canvasContext.getImageData(i/4%canvasContext.canvas.width, Math.floor(i/4/canvasContext.canvas.width), 1, 1).data[3] === 0) {
-        imgData.data[i+3] = 0;
-      }
-    }
-    // put the new image data back onto the canvas
-    canvasContext.putImageData(imgData, 0, 0);
-    // convert the canvas to a blob
+  
+    // Convert the edited canvas (mask) to a blob and save
     canvasContext.canvas.toBlob(async (blob) => {
-      // use Amplify Storage to save the blob to S3
       try {
-        const result = await Storage.put('mask.png', blob, {
+        const maskResult = await Storage.put('mask.png', blob, {
           contentType: 'image/png'
         });
-        console.log(result); // This logs the key of the uploaded file
+        console.log('Mask:', maskResult); // Logs the key of the masked uploaded file
       } catch (error) {
         console.error('Error uploading file: ', error);
       }
     }, 'image/png');
+    console.log("Last Prompt: ", lastPrompt);
+    console.log("Current Prompt: ", currentPrompt);
     setCurrentCollapsible("Select a result");
   };
-
-
-  const handleGenerate = () => {
-    // Handle generate new results
-  };
-
+  
   useEffect(() => {
     if (canvasContext) {
       canvasContext.canvas.addEventListener('mousedown', startDraw);
@@ -110,7 +124,7 @@ const handleContinue = () => {
   return (
     <div className='p-4 '>
         <Collapsible title="Brush over the Image" isOpen={currentCollapsible === "Brush over the Image"}>
-        <p>Hightlight the area(s) you want to change</p>
+        <p>Erase the area(s) you want to change</p>
         {/* Canvas implementation for brush functionality goes here */}
         <div className="mt-2">
       <input ref={brushSizeRef} type="range" min="1" max="30" defaultValue="5" onChange={handleBrushSizeChange} className="slider slider-horizontal w-full"/>

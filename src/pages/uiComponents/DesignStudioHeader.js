@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { DataStore } from '@aws-amplify/datastore';
 import { Design } from '../../models';
 import { DesignStudioContext } from '../../DesignStudioContext';
-import { Storage } from "@aws-amplify/storage"
+
 
 const DesignStudioHeader = ({ collectionName }) => {
-  const { selectedImage } = useContext(DesignStudioContext);
+  const { selectedImage, undo } = useContext(DesignStudioContext);
   const { design_id } = useParams();
   const [designName, setDesignName] = useState('');
   const [designDescription, setDesignDescription] = useState('');
@@ -29,6 +29,12 @@ const DesignStudioHeader = ({ collectionName }) => {
   
     fetchDesign();
   }, [design_id]);
+
+  const handleUndoClick = () => {  // New handler for undo
+    console.log("undo");
+    undo();
+  };
+
 
   const navigate = useNavigate();
 
@@ -88,7 +94,11 @@ const DesignStudioHeader = ({ collectionName }) => {
           <ChevronLeftIcon className='h-8 w-8 text-gray-900'/> 
         </button>
         <span className="ml-4 text-lg">{collectionName}</span>
-        <HistoryOutlinedIcon className="text-gray-500 ml-6 hover:text-black" /><span className="text-sm text-gray-400">undo</span>
+       {/* updated onClick handler for the undo button */}
+       <button onClick={handleUndoClick}>
+          <HistoryOutlinedIcon className="text-gray-500 ml-6 hover:text-black" />
+          <span className="text-sm text-gray-400">undo</span>
+        </button>
       </div>
       <div className="relative">
         <input

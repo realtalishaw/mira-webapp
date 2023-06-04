@@ -1,21 +1,40 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useReducer } from 'react';
 import axios from 'axios';
 import { API } from 'aws-amplify';
 
 export const DesignStudioContext = createContext();
 
+const getFilenameFromUrl = (url) => {
+  const urlObj = new URL(url);
+  const pathSegments = urlObj.pathname.split('/');
+  const filename = pathSegments[pathSegments.length - 1];
+  return filename;
+}
+
+function actionHistoryReducer(state, action) {
+  switch (action.type) {
+    case 'CREATE':
+    case 'VARIATIONS':
+    case 'UPLOAD':
+    case 'EDIT':
+    case 'MOODBOARD':
+      return [...state, action];
+    case 'UNDO':
+      if (state.length === 0) return state;
+      return state.slice(0, -1);  // Remove the last action
+    case 'REDO':
+      // TODO: Implement your redo logic here. You might need additional state to keep track of undone actions.
+    default:
+      return state;
+  }
+}
+
 export const DesignStudioProvider = ({ children }) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [canvasContext, setCanvasContext] = useState(null);
+  const [actionHistory, dispatch] = useReducer(actionHistoryReducer, []);
 
-  const getFilenameFromUrl = (url) => {
-    const urlObj = new URL(url);
-    const pathSegments = urlObj.pathname.split('/');
-    const filename = pathSegments[pathSegments.length - 1];
-    return filename;
-  }
-  
   const generateImage = async (text) => {
     try {
       const payload = {
@@ -58,8 +77,32 @@ export const DesignStudioProvider = ({ children }) => {
     }
   };
 
+  const saveAction = (actionType, payload) => {
+    dispatch({ type: actionType, payload });
+  };
+
+  const undo = () => {
+    dispatch({ type: 'UNDO' });
+  };
+
+  const redo = () => {
+    dispatch({ type: 'REDO' });
+  };
+
   return (
-    <DesignStudioContext.Provider value={{ imageUrl, generateImage, selectedImage, setSelectedImage, canvasContext, setCanvasContext }}>
+    <DesignStudioContext.Provider 
+      value={{ 
+        imageUrl, 
+        generateImage, 
+        selectedImage, 
+        setSelectedImage, 
+        canvasContext, 
+        setCanvasContext, 
+        actionHistory, 
+        saveAction, 
+        undo, 
+        redo 
+      }}>
       {children}
     </DesignStudioContext.Provider>
   );
