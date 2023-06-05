@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Modal } from '@mui/material';
 import MoodboardCard from './MoodBoardCard';
 import EmptyState from './EmptyState';
@@ -6,18 +6,42 @@ import { XMarkIcon, CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24
 import ImageCard from './ImageCard';
 import FileUpload from './FileUpload';
 import ColorPicker from './ColorPicker'; 
+import UserContext from '../../UserContext'
+import { DataStore } from '@aws-amplify/datastore';
+import { MoodBoard } from '../../models';
+import { Storage } from 'aws-amplify';
 
 const MoodboardModal = ({ isOpen, onClose, moodBoard, modalState: initialModalState }) => {
+  const [moodBoards, setMoodBoards] = useState([]);
   const [modalState, setModalState] = useState(initialModalState);
   const [moodBoardName, setMoodBoardName] = useState(moodBoard?.name || '');
   const [prevModalState, setPrevModalState] = useState(null); // to store the previous state
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     setModalState(initialModalState);
     setMoodBoardName(moodBoard?.name || '');
   }, [initialModalState, moodBoard]);
-  
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchMoodboards();
+    }
+  }, [isOpen]);
+
+  const fetchMoodboards = async () => {
+    const moodboardData = await DataStore.query(MoodBoard, mb => mb.userID.eq(user.id));
+    const moodBoardsWithImages = await Promise.all(
+      moodboardData.map(async (mb) => {
+        const textures = await Promise.all(mb.textures.map(key => Storage.get(key)));
+        const patterns = await Promise.all(mb.patterns.map(key => Storage.get(key)));
+        const inspiration = await Promise.all(mb.inspiration.map(key => Storage.get(key)));
+        return { ...mb, textures, patterns, inspiration };
+      })
+    );
+    setMoodBoards(moodBoardsWithImages);
+  };
   const handleNewClick = () => {
     setModalState('new');
     setMoodBoardName('');
@@ -70,8 +94,9 @@ const MoodboardModal = ({ isOpen, onClose, moodBoard, modalState: initialModalSt
     setModalState(prevModalState || 'default');
   };
 
-  const handleDelete = () => {
-    // Implement the delete functionality here
+  const handleDelete = async() => {
+   const board = await DataStore.query(MoodBoard, 123456789);
+   DataStore.delete(board)
     setModalState('default');
   };
 
@@ -84,16 +109,18 @@ const MoodboardModal = ({ isOpen, onClose, moodBoard, modalState: initialModalSt
           <XMarkIcon className="w-6 h-6" />
         </button>
         {modalState === 'default' && (
-          <div className='grid grid-cols-4 gap-6 justify-center items-center'>
-            <EmptyState onNewCollectionClick={handleNewClick} title='New Moodboard' />
+        <div className='grid grid-cols-4 gap-6 justify-center items-center'>
+          <EmptyState onNewCollectionClick={handleNewClick} title='New Moodboard' />
+          {moodBoards.map((moodBoard) => (
             <MoodboardCard
-              image1='https://via.placeholder.com/150'
-              image2='https://via.placeholder.com/150'
-              image3='https://via.placeholder.com/150'
-              moodBoardName='My Moodboard'
+              image1={moodBoard.textures[0] || '/images/placeholderImage.png'}
+              image2={moodBoard.patterns[0] || '/images/placeholderImage.png'}
+              image3={moodBoard.inspiration[0] || '/images/placeholderImage.png'}
+              moodBoardName={moodBoard.name}
               onEditClick={handleEditClick}
               onDeleteClick={handleDeleteClick}
             />
+          ))}
           </div>
         )}
         {modalState === 'upload' && (

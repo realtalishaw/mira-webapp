@@ -4,9 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Following, Followers, Like, Comments, MoodBoard, Design, Collection, User, FollowingUser, UserFollowers } = initSchema(schema);
+const { Session, Following, Followers, Like, Comments, MoodBoard, Design, Collection, User } = initSchema(schema);
 
 export {
+  Session,
   Following,
   Followers,
   Like,
@@ -14,7 +15,5 @@ export {
   MoodBoard,
   Design,
   Collection,
-  User,
-  FollowingUser,
-  UserFollowers
+  User
 };

@@ -1,10 +1,42 @@
 import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
 
 
 
 
+
+type EagerSession = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Session, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly imgKeys?: (string | null)[] | null;
+  readonly prompt?: string | null;
+  readonly designID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazySession = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Session, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly imgKeys?: (string | null)[] | null;
+  readonly prompt?: string | null;
+  readonly designID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Session = LazyLoading extends LazyLoadingDisabled ? EagerSession : LazySession
+
+export declare const Session: (new (init: ModelInit<Session>) => Session) & {
+  copyOf(source: Session, mutator: (draft: MutableModel<Session>) => MutableModel<Session> | void): Session;
+}
 
 type EagerFollowing = {
   readonly [__modelMeta__]: {
@@ -13,7 +45,7 @@ type EagerFollowing = {
   };
   readonly id: string;
   readonly createdAt?: string | null;
-  readonly followingId?: (FollowingUser | null)[] | null;
+  readonly userID: string;
   readonly updatedAt?: string | null;
 }
 
@@ -24,7 +56,7 @@ type LazyFollowing = {
   };
   readonly id: string;
   readonly createdAt?: string | null;
-  readonly followingId: AsyncCollection<FollowingUser>;
+  readonly userID: string;
   readonly updatedAt?: string | null;
 }
 
@@ -41,7 +73,7 @@ type EagerFollowers = {
   };
   readonly id: string;
   readonly createdAt?: string | null;
-  readonly users?: (UserFollowers | null)[] | null;
+  readonly userID: string;
   readonly updatedAt?: string | null;
 }
 
@@ -52,7 +84,7 @@ type LazyFollowers = {
   };
   readonly id: string;
   readonly createdAt?: string | null;
-  readonly users: AsyncCollection<UserFollowers>;
+  readonly userID: string;
   readonly updatedAt?: string | null;
 }
 
@@ -70,8 +102,9 @@ type EagerLike = {
   readonly id: string;
   readonly createdAt?: string | null;
   readonly userID: string;
-  readonly collectionID: string;
-  readonly designID: string;
+  readonly collectionID?: string | null;
+  readonly designID?: string | null;
+  readonly commentsID?: string | null;
   readonly updatedAt?: string | null;
 }
 
@@ -83,8 +116,9 @@ type LazyLike = {
   readonly id: string;
   readonly createdAt?: string | null;
   readonly userID: string;
-  readonly collectionID: string;
-  readonly designID: string;
+  readonly collectionID?: string | null;
+  readonly designID?: string | null;
+  readonly commentsID?: string | null;
   readonly updatedAt?: string | null;
 }
 
@@ -104,6 +138,7 @@ type EagerComments = {
   readonly userID: string;
   readonly designID: string;
   readonly createdAt?: string | null;
+  readonly Likes?: (Like | null)[] | null;
   readonly updatedAt?: string | null;
 }
 
@@ -117,6 +152,7 @@ type LazyComments = {
   readonly userID: string;
   readonly designID: string;
   readonly createdAt?: string | null;
+  readonly Likes: AsyncCollection<Like>;
   readonly updatedAt?: string | null;
 }
 
@@ -178,6 +214,7 @@ type EagerDesign = {
   readonly createdAt?: string | null;
   readonly Likes?: (Like | null)[] | null;
   readonly designImage?: string | null;
+  readonly Session?: (Session | null)[] | null;
   readonly updatedAt?: string | null;
 }
 
@@ -195,6 +232,7 @@ type LazyDesign = {
   readonly createdAt?: string | null;
   readonly Likes: AsyncCollection<Like>;
   readonly designImage?: string | null;
+  readonly Session: AsyncCollection<Session>;
   readonly updatedAt?: string | null;
 }
 
@@ -217,6 +255,7 @@ type EagerCollection = {
   readonly collectionURL?: string | null;
   readonly Likes?: (Like | null)[] | null;
   readonly privacy?: boolean | null;
+  readonly description?: string | null;
   readonly updatedAt?: string | null;
 }
 
@@ -233,6 +272,7 @@ type LazyCollection = {
   readonly collectionURL?: string | null;
   readonly Likes: AsyncCollection<Like>;
   readonly privacy?: boolean | null;
+  readonly description?: string | null;
   readonly updatedAt?: string | null;
 }
 
@@ -263,8 +303,8 @@ type EagerUser = {
   readonly Comments?: (Comments | null)[] | null;
   readonly profileUrl: string;
   readonly Likes?: (Like | null)[] | null;
-  readonly Followers?: (UserFollowers | null)[] | null;
-  readonly followings?: (FollowingUser | null)[] | null;
+  readonly Followers?: (Followers | null)[] | null;
+  readonly followings?: (Following | null)[] | null;
   readonly uploads?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -291,8 +331,8 @@ type LazyUser = {
   readonly Comments: AsyncCollection<Comments>;
   readonly profileUrl: string;
   readonly Likes: AsyncCollection<Like>;
-  readonly Followers: AsyncCollection<UserFollowers>;
-  readonly followings: AsyncCollection<FollowingUser>;
+  readonly Followers: AsyncCollection<Followers>;
+  readonly followings: AsyncCollection<Following>;
   readonly uploads?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -302,72 +342,4 @@ export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser :
 
 export declare const User: (new (init: ModelInit<User>) => User) & {
   copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
-}
-
-type EagerFollowingUser = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<FollowingUser, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly followingId?: string | null;
-  readonly userId?: string | null;
-  readonly following: Following;
-  readonly user: User;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyFollowingUser = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<FollowingUser, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly followingId?: string | null;
-  readonly userId?: string | null;
-  readonly following: AsyncItem<Following>;
-  readonly user: AsyncItem<User>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type FollowingUser = LazyLoading extends LazyLoadingDisabled ? EagerFollowingUser : LazyFollowingUser
-
-export declare const FollowingUser: (new (init: ModelInit<FollowingUser>) => FollowingUser) & {
-  copyOf(source: FollowingUser, mutator: (draft: MutableModel<FollowingUser>) => MutableModel<FollowingUser> | void): FollowingUser;
-}
-
-type EagerUserFollowers = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<UserFollowers, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly followersId?: string | null;
-  readonly userId?: string | null;
-  readonly followers: Followers;
-  readonly user: User;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyUserFollowers = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<UserFollowers, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly followersId?: string | null;
-  readonly userId?: string | null;
-  readonly followers: AsyncItem<Followers>;
-  readonly user: AsyncItem<User>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type UserFollowers = LazyLoading extends LazyLoadingDisabled ? EagerUserFollowers : LazyUserFollowers
-
-export declare const UserFollowers: (new (init: ModelInit<UserFollowers>) => UserFollowers) & {
-  copyOf(source: UserFollowers, mutator: (draft: MutableModel<UserFollowers>) => MutableModel<UserFollowers> | void): UserFollowers;
 }

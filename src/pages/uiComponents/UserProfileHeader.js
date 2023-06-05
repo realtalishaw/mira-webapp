@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Menu, Transition } from '@headlessui/react';
-import { EllipsisHorizontalCircleIcon, PencilSquareIcon, ShareIcon, LinkIcon } from '@heroicons/react/24/outline';
+import { EllipsisHorizontalCircleIcon, ShareIcon, LinkIcon } from '@heroicons/react/24/outline';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faFacebook,
@@ -8,24 +8,68 @@ import {
     faInstagram
 } from "@fortawesome/free-brands-svg-icons";
 import UserContext from '../../UserContext'
+import ShareProfileModal from './ShareProfileModal';
+import { DataStore } from '@aws-amplify/datastore';
+import { Like, Followers, Following } from '../../models';
+
 
 
 const UserProfileHeader = ({isFollowing: isFollowingProp}) => {
     const { user } = useContext(UserContext);
     const [isFollowing, setIsFollowing] = useState(isFollowingProp);
+    const [isShareOpen, setIsShareOpen] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
+    const [followersCount, setFollowersCount] = useState(0);
+    const [followingCount, setFollowingCount] = useState(0);
+    
+
+    useEffect(() => {
+        // Function to load count of likes
+        const loadLikesCount = async () => {
+            const likes = await DataStore.query(Like, l => l.userID.eq(user.id));
+            setLikesCount(likes.length);
+        };
+
+        // Function to load count of followers
+        const loadFollowersCount = async () => {
+            const followers = await DataStore.query(Followers, f => f.userID.eq(user.id));
+            setFollowersCount(followers.length);
+        };
+
+        // Function to load count of following
+        const loadFollowingCount = async () => {
+            const following = await DataStore.query(Following, f => f.userID.eq(user.id));
+            setFollowingCount(following.length);
+        };
+
+        loadLikesCount();
+        loadFollowersCount();
+        loadFollowingCount();
+    }, []);
 
     const handleFollowClick = () => {
         setIsFollowing(!isFollowing);
     };
 
+    const toggleShare = () => {
+        setIsShareOpen(prev => !prev);
+      };
 
     return (
         <div className="flex flex-col items-center text-center ">
-            <div className="avatar mt-4">
-                <div className="w-44 h-44 overflow-hidden rounded-full">
-                    <img src={user.avatar} alt="User Avatar" />
-                </div>
+           {user.avatar ?
+        <div className='avatar p-4'>
+          <div className="w-44  rounded-full">
+          <img className="avatar" src={user.avatar} alt="User Avatar" /> 
+          </div>
+          </div>
+          : 
+          <div className="avatar placeholder">
+            <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
+              <span className="text-3xl">{user.firstName.charAt(0)}</span>
             </div>
+          </div>
+        }
 
             <div className="flex items-center mt-4 justify-center">
                 <h1 className="text-4xl font-bold">{user.firstName} {user.lastName}</h1>
@@ -44,16 +88,10 @@ const UserProfileHeader = ({isFollowing: isFollowingProp}) => {
                     >
                         <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <Menu.Item className="hover:bg-gray-100">
-                                <a href="/settings" className="flex items-center w-full px-4 py-2 text-left">
-                                    <PencilSquareIcon className="w-4 h-4 mr-2" />
-                                    Edit Profile
-                                </a>
-                            </Menu.Item>
-                            <Menu.Item className="hover:bg-gray-100">
-                                <a href={`/@${user.username}`} className="flex items-center w-full px-4 py-2 text-left">
-                                    <ShareIcon className="w-4 h-4 mr-2" />
-                                    Share Profile
-                                </a>
+                            <button onClick={toggleShare} className="flex items-center w-full px-4 py-2 text-left">
+                  <ShareIcon className="w-4 h-4 mr-2" />
+                  Share Profile
+                </button>
                             </Menu.Item>
                         </Menu.Items>
                     </Transition>
@@ -65,18 +103,18 @@ const UserProfileHeader = ({isFollowing: isFollowingProp}) => {
             </div>
 
             <div className="mt-4 flex w-1/4 h-12 pb-2">
-                <div className="flex-1">
-                    <div className="font-extrabold">{user.following || 0}</div>
-                    <div>Following</div>
-                </div>
-                <div className="border-l border-r pl-6 pr-6">
-                    <div className="font-extrabold">{user.followers || 0}</div>
-                    <div>Followers</div>
-                </div>
-                <div className="flex-1">
-                    <div className="font-extrabold">{user.likes || 0}</div>
-                    <div>Likes</div>
-                </div>
+            <div className="flex-1">
+            <div className="font-extrabold">{followingCount}</div>
+            <div>Following</div>
+        </div>
+        <div className="border-l border-r pl-6 pr-6">
+            <div className="font-extrabold">{followersCount}</div>
+            <div>Followers</div>
+        </div>
+        <div className="flex-1">
+            <div className="font-extrabold">{likesCount}</div>
+            <div>Likes</div>
+        </div>
             </div>
             <div className="mt-4 flex justify-center w-1/4">
                 <button
@@ -95,12 +133,20 @@ const UserProfileHeader = ({isFollowing: isFollowingProp}) => {
             </div>
 
             <div className="mt-4 flex justify-center w-3/4">
-                <a href={user.website} className="flex items-center hover:text-lg ">
-                    <LinkIcon className="w-6 h-6 mr-2" />
-                    {user.website}
-                </a>
-            </div>
+            <a href={user.website} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-lg ">
+    <LinkIcon className="w-6 h-6 mr-2" />
+    {user.website}
+</a>
 
+            </div>
+    {/* Share Modal */}
+    {isShareOpen && (
+     <ShareProfileModal 
+     isOpen={isShareOpen} 
+     closeModal={toggleShare}
+     shareProfileLink={`/@${user.username}`}
+   />
+      )}
         </div>
     );
 }

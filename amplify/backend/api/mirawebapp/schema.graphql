@@ -1,21 +1,29 @@
+type Session @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  imgKeys: [String]
+  prompt: String
+  designID: ID! @index(name: "byDesign")
+}
+
 type Following @model @auth(rules: [{allow: public}]) {
   id: ID!
   createdAt: String
-  followingId: [User] @manyToMany(relationName: "FollowingUser")
+  userID: ID! @index(name: "byUser")
 }
 
 type Followers @model @auth(rules: [{allow: public}]) {
   id: ID!
   createdAt: AWSDateTime
-  users: [User] @manyToMany(relationName: "UserFollowers")
+  userID: ID! @index(name: "byUser")
 }
 
 type Like @model @auth(rules: [{allow: public}]) {
   id: ID!
   createdAt: AWSDateTime
   userID: ID! @index(name: "byUser")
-  collectionID: ID! @index(name: "byCollection")
-  designID: ID! @index(name: "byDesign")
+  collectionID: ID @index(name: "byCollection")
+  designID: ID @index(name: "byDesign")
+  commentsID: ID @index(name: "byComments")
 }
 
 type Comments @model @auth(rules: [{allow: public}]) {
@@ -24,6 +32,7 @@ type Comments @model @auth(rules: [{allow: public}]) {
   userID: ID! @index(name: "byUser")
   designID: ID! @index(name: "byDesign")
   createdAt: AWSDateTime
+  Likes: [Like] @hasMany(indexName: "byComments", fields: ["id"])
 }
 
 type MoodBoard @model @auth(rules: [{allow: public}]) {
@@ -46,7 +55,8 @@ type Design @model @auth(rules: [{allow: public}]) {
   Comments: [Comments] @hasMany(indexName: "byDesign", fields: ["id"])
   createdAt: AWSDateTime
   Likes: [Like] @hasMany(indexName: "byDesign", fields: ["id"])
-  designImage: AWSURL
+  designImage: String
+  Session: [Session] @hasMany(indexName: "byDesign", fields: ["id"])
 }
 
 type Collection @model @auth(rules: [{allow: public}]) {
@@ -58,6 +68,7 @@ type Collection @model @auth(rules: [{allow: public}]) {
   collectionURL: String
   Likes: [Like] @hasMany(indexName: "byCollection", fields: ["id"])
   privacy: Boolean
+  description: String
 }
 
 type User @model @auth(rules: [{allow: public}]) {
@@ -77,8 +88,8 @@ type User @model @auth(rules: [{allow: public}]) {
   Comments: [Comments] @hasMany(indexName: "byUser", fields: ["id"])
   profileUrl: String!
   Likes: [Like] @hasMany(indexName: "byUser", fields: ["id"])
-  Followers: [Followers] @manyToMany(relationName: "UserFollowers")
-  followings: [Following] @manyToMany(relationName: "FollowingUser")
+  Followers: [Followers] @hasMany(indexName: "byUser", fields: ["id"])
+  followings: [Following] @hasMany(indexName: "byUser", fields: ["id"])
   uploads: [String]
 }
  

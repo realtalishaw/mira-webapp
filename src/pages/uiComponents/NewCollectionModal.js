@@ -1,33 +1,39 @@
 import React, { useState } from 'react';
 import { XMarkIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import {  DataStore } from 'aws-amplify';
+import { DataStore } from 'aws-amplify';
 import { Collection } from '../../models'
+import { useNavigate } from 'react-router-dom';
+
 
 const NewCollectionModal = ({ isOpen, onClose, user }) => {
     const [collectionName, setCollectionName] = useState("");
     const [collectionInfo, setCollectionInfo] = useState("");
     const [isPublic, setIsPublic] = useState(true);
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState(null);
+
+
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-    
+
         try {
-          const collectionInput = {
-            collectionName,
-            userID: user.id, 
-          };
-          
-    
-           const result = await DataStore.save(new Collection(collectionInput));
-      
-          console.log("Collection created: ", result);
-          // you might want to close the modal and/or update the state to reflect the new collection
-           onClose();
+            const collectionInput = {
+                collectionName,
+                userID: user.id,
+            };
+            const result = await DataStore.save(new Collection(collectionInput));
+            navigate(`/collection/${result.id}`);
+
+            onClose();
         } catch (error) {
-          console.error("Error creating new collection: ", error);
+            console.error("Error creating new collection: ", error);
+            setErrorMessage(error.message);
         }
-      }
-      
+    };
+
+
 
     const collectionNameExceeded = collectionName.length > 50;
     const collectionInfoExceeded = collectionInfo.length > 400;
@@ -87,8 +93,10 @@ const NewCollectionModal = ({ isOpen, onClose, user }) => {
                         </div>
 
                         <div className="text-right">
-                            <button type="submit" className="py-2 px-4 btn btn-outline">Create</button>
-                        </div>
+    {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+    <button type="submit" className="py-2 px-4 btn btn-outline">Create</button>
+</div>
+
                     </form>
                 </div>
             </div>

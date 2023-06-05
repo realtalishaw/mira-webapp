@@ -5,9 +5,5 @@
  **************************************************************************/
 
 export { default as studioTheme } from "./studioTheme";
-export { default as FollowingCreateForm } from "./FollowingCreateForm";
-export { default as FollowingUpdateForm } from "./FollowingUpdateForm";
-export { default as FollowersCreateForm } from "./FollowersCreateForm";
-export { default as FollowersUpdateForm } from "./FollowersUpdateForm";
 export { default as UserCreateForm } from "./UserCreateForm";
 export { default as UserUpdateForm } from "./UserUpdateForm";

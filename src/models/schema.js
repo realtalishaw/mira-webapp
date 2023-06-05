@@ -1,5 +1,88 @@
 export const schema = {
     "models": {
+        "Session": {
+            "name": "Session",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "imgKeys": {
+                    "name": "imgKeys",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "prompt": {
+                    "name": "prompt",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "designID": {
+                    "name": "designID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Sessions",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byDesign",
+                        "fields": [
+                            "designID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Following": {
             "name": "Following",
             "fields": {
@@ -17,21 +100,12 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "followingId": {
-                    "name": "followingId",
-                    "isArray": true,
-                    "type": {
-                        "model": "FollowingUser"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "following"
-                        ]
-                    }
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -48,6 +122,15 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -84,21 +167,12 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "users": {
-                    "name": "users",
-                    "isArray": true,
-                    "type": {
-                        "model": "UserFollowers"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "followers"
-                        ]
-                    }
+                "userID": {
+                    "name": "userID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -115,6 +189,15 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -162,14 +245,21 @@ export const schema = {
                     "name": "collectionID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "designID": {
                     "name": "designID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "commentsID": {
+                    "name": "commentsID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "updatedAt": {
@@ -212,6 +302,15 @@ export const schema = {
                         "name": "byDesign",
                         "fields": [
                             "designID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byComments",
+                        "fields": [
+                            "commentsID"
                         ]
                     }
                 },
@@ -270,6 +369,22 @@ export const schema = {
                     "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
+                },
+                "Likes": {
+                    "name": "Likes",
+                    "isArray": true,
+                    "type": {
+                        "model": "Like"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "commentsID"
+                        ]
+                    }
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -510,9 +625,25 @@ export const schema = {
                 "designImage": {
                     "name": "designImage",
                     "isArray": false,
-                    "type": "AWSURL",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "Session": {
+                    "name": "Session",
+                    "isArray": true,
+                    "type": {
+                        "model": "Session"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "designID"
+                        ]
+                    }
                 },
                 "updatedAt": {
                     "name": "updatedAt",
@@ -631,6 +762,13 @@ export const schema = {
                     "name": "privacy",
                     "isArray": false,
                     "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -832,7 +970,7 @@ export const schema = {
                     "name": "Followers",
                     "isArray": true,
                     "type": {
-                        "model": "UserFollowers"
+                        "model": "Followers"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -840,7 +978,7 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "user"
+                            "userID"
                         ]
                     }
                 },
@@ -848,7 +986,7 @@ export const schema = {
                     "name": "followings",
                     "isArray": true,
                     "type": {
-                        "model": "FollowingUser"
+                        "model": "Following"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -856,7 +994,7 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "user"
+                            "userID"
                         ]
                     }
                 },
@@ -909,206 +1047,10 @@ export const schema = {
                     }
                 }
             ]
-        },
-        "FollowingUser": {
-            "name": "FollowingUser",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "followingId": {
-                    "name": "followingId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "userId": {
-                    "name": "userId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "following": {
-                    "name": "following",
-                    "isArray": false,
-                    "type": {
-                        "model": "Following"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "followingId"
-                        ]
-                    }
-                },
-                "user": {
-                    "name": "user",
-                    "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "userId"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "FollowingUsers",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byFollowing",
-                        "fields": [
-                            "followingId"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byUser",
-                        "fields": [
-                            "userId"
-                        ]
-                    }
-                }
-            ]
-        },
-        "UserFollowers": {
-            "name": "UserFollowers",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "followersId": {
-                    "name": "followersId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "userId": {
-                    "name": "userId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "followers": {
-                    "name": "followers",
-                    "isArray": false,
-                    "type": {
-                        "model": "Followers"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "followersId"
-                        ]
-                    }
-                },
-                "user": {
-                    "name": "user",
-                    "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "userId"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "UserFollowers",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byFollowers",
-                        "fields": [
-                            "followersId"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byUser",
-                        "fields": [
-                            "userId"
-                        ]
-                    }
-                }
-            ]
         }
     },
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "87f1b31c0d77319fbc865fe9f6691e8d"
+    "version": "412d6922cc7261e0877b2c1e5532f21c"
 };

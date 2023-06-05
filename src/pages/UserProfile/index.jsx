@@ -3,7 +3,7 @@ import UserProfileHeader from '../uiComponents/UserProfileHeader';
 import CollectionCard from '../uiComponents/CollectionCard';
 import Header from '../uiComponents/Header';
 import { DataStore } from 'aws-amplify';
-import { Collection } from '../../models';
+import { Collection, Design } from '../../models';
 import UserContext from '../../UserContext'
 
 const UserProfile = () => {
@@ -14,8 +14,14 @@ const UserProfile = () => {
     const fetchCollections = async () => {
       try {
         const result = await DataStore.query(Collection, c => c.userID.eq(user.id));
-
-        setCollections(result);
+        const updatedCollections = await Promise.all(
+          result.map(async (collection) => {
+            const designs = await DataStore.query(Design, d => d.collectionID.eq(collection.id));
+            return { ...collection, designs: designs.slice(0, 3) };
+          })
+        );
+  
+        setCollections(updatedCollections);
       } catch (error) {
         console.error("Error", error);
       }
@@ -29,6 +35,7 @@ const UserProfile = () => {
     return () => subscription.unsubscribe();
   
   }, [user.id]);
+  
 
   return (
     <div>
@@ -37,16 +44,15 @@ const UserProfile = () => {
     <div className='flex justify-center pt-6'>
     <div class="grid grid-cols-4 gap-6 pb-6">
     {collections.map((collection) => (
-        <CollectionCard 
-          image1="https://img1.shopcider.com/product/1672746341000-KFdRHt.jpg?x-oss-process=image/resize,w_1050,m_lfit/quality,Q_80/interlace,1"
-          image2="https://img1.shopcider.com/product/1678538066000-RFRRDk.jpg?x-oss-process=image/resize,w_1400,m_lfit/quality,Q_80/interlace,1"
-          image3="https://img.ltwebstatic.com/images3_pi/2023/05/02/1683011192bd134598c37f84be64e119ee36bd7c8b_thumbnail_900x.webp"
-          collectionName={collection.collectionName}
-          isUserCollection={false}
-          url={`/collection/${collection.id}`}
-          collection_id={collection.id}
-        />
-        ))}
+  <CollectionCard 
+    designs={collection.designs}
+    collectionName={collection.collectionName}
+    isUserCollection={false}
+    url={`/collection/${collection.id}/${collection.collectionName}`}
+    collection_id={collection.id}
+  />
+))}
+
         </div>
     </div>
     </div>

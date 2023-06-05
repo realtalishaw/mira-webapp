@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalCircleIcon, EyeIcon, EyeSlashIcon, LockClosedIcon, PencilSquareIcon, ShareIcon } from '@heroicons/react/24/outline';
 import SpaceDashboardOutlined from '@mui/icons-material/SpaceDashboardOutlined';
 import MoodboardModal from './MoodBoardModal';
+import UserContext from '../../UserContext'
+import EditDeleteCollectionModal from './EditDeleteCollectionModal';
+import ShareProfileModal from './ShareProfileModal';
+import { useParams } from 'react-router-dom';
+
 
 const CollectionHeader = ({ collectionName, username, avatarUrl }) => {
+  const { user } = useContext(UserContext);
   const [isMoodBoardOpen, setIsMoodBoardOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isEditDeleteModalOpen, setIsEditDeleteModalOpen] = useState(false);
+  const { collection_id } = useParams();
+
 
   const [privacyStatus, setPrivacyStatus] = useState({ text: 'Public', icon: <EyeIcon className="w-6 h-6" /> });
 
@@ -22,6 +31,12 @@ const CollectionHeader = ({ collectionName, username, avatarUrl }) => {
   const toggleShare = () => {
     setIsShareOpen(prev => !prev);
   };
+
+  const toggleEditDeleteModal = () => {
+    setIsEditDeleteModalOpen(prev => !prev);
+  };
+
+
 
   return (
     <div className="text-center m-12">
@@ -42,10 +57,10 @@ const CollectionHeader = ({ collectionName, username, avatarUrl }) => {
           >
             <Menu.Items className="z-40 absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <Menu.Item className="hover:bg-gray-100">
-                <button className="flex items-center w-full px-4 py-2 text-left">
-                  <PencilSquareIcon className="w-4 h-4 mr-2" />
-                  Edit Collection
-                </button>
+              <button onClick={toggleEditDeleteModal} className="flex items-center w-full px-4 py-2 text-left">
+        <PencilSquareIcon className="w-4 h-4 mr-2" />
+        Edit Collection
+      </button>
               </Menu.Item>
               <Menu.Item className="hover:bg-gray-100">
                 <button onClick={toggleShare} className="flex items-center w-full px-4 py-2 text-left">
@@ -60,8 +75,19 @@ const CollectionHeader = ({ collectionName, username, avatarUrl }) => {
 
       <div className="flex justify-center items-center mt-2">
         <div className="avatar">
-        <div className="w-12 rounded-full">
-          <img src={avatarUrl} alt="User Avatar" />        </div>
+        {avatarUrl ?
+        <div className='avatar'>
+          <div className="w-12 rounded-full">
+          <img className="avatar" src={avatarUrl} alt="User Avatar" /> 
+          </div>
+          </div>
+          : 
+          <div className="avatar placeholder">
+            <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
+              <span className="text-3xl">{user.firstName.charAt(0)}</span>
+            </div>
+          </div>
+        }
         </div>
         <p className="ml-2">
           By <Link to={`/@${username}`} className="underline">@{username}</Link>
@@ -131,16 +157,23 @@ const CollectionHeader = ({ collectionName, username, avatarUrl }) => {
     modalState="default"
   />
 )}
+  {isEditDeleteModalOpen && (
+      <EditDeleteCollectionModal 
+        isOpen={isEditDeleteModalOpen} 
+        onClose={toggleEditDeleteModal} 
+        collectionName={collectionName}
+        collection_id={collection_id}
 
+      />
+    )}
 
       {/* Share Modal */}
       {isShareOpen && (
-        <div className="fixed inset-0 z-10 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-lg">
-            <h2 className="font-bold mb-2">Share Collection</h2>
-            <button onClick={toggleShare}>Close</button>
-          </div>
-        </div>
+     <ShareProfileModal 
+     isOpen={isShareOpen} 
+     closeModal={toggleShare}
+     shareProfileLink={`/collection/${collection_id}`}
+   />
       )}
     </div>
   );
