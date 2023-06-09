@@ -1,6 +1,123 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createAction = /* GraphQL */ `
+  mutation CreateAction(
+    $input: CreateActionInput!
+    $condition: ModelActionConditionInput
+  ) {
+    createAction(input: $input, condition: $condition) {
+      id
+      prompt
+      imgKey
+      sessionID
+      tool
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateAction = /* GraphQL */ `
+  mutation UpdateAction(
+    $input: UpdateActionInput!
+    $condition: ModelActionConditionInput
+  ) {
+    updateAction(input: $input, condition: $condition) {
+      id
+      prompt
+      imgKey
+      sessionID
+      tool
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteAction = /* GraphQL */ `
+  mutation DeleteAction(
+    $input: DeleteActionInput!
+    $condition: ModelActionConditionInput
+  ) {
+    deleteAction(input: $input, condition: $condition) {
+      id
+      prompt
+      imgKey
+      sessionID
+      tool
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createSession = /* GraphQL */ `
+  mutation CreateSession(
+    $input: CreateSessionInput!
+    $condition: ModelSessionConditionInput
+  ) {
+    createSession(input: $input, condition: $condition) {
+      id
+      designID
+      Actions {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateSession = /* GraphQL */ `
+  mutation UpdateSession(
+    $input: UpdateSessionInput!
+    $condition: ModelSessionConditionInput
+  ) {
+    updateSession(input: $input, condition: $condition) {
+      id
+      designID
+      Actions {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteSession = /* GraphQL */ `
+  mutation DeleteSession(
+    $input: DeleteSessionInput!
+    $condition: ModelSessionConditionInput
+  ) {
+    deleteSession(input: $input, condition: $condition) {
+      id
+      designID
+      Actions {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const createFollowing = /* GraphQL */ `
   mutation CreateFollowing(
     $input: CreateFollowingInput!
@@ -9,10 +126,7 @@ export const createFollowing = /* GraphQL */ `
     createFollowing(input: $input, condition: $condition) {
       id
       createdAt
-      followingId {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -28,10 +142,7 @@ export const updateFollowing = /* GraphQL */ `
     updateFollowing(input: $input, condition: $condition) {
       id
       createdAt
-      followingId {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -47,10 +158,7 @@ export const deleteFollowing = /* GraphQL */ `
     deleteFollowing(input: $input, condition: $condition) {
       id
       createdAt
-      followingId {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -66,10 +174,7 @@ export const createFollowers = /* GraphQL */ `
     createFollowers(input: $input, condition: $condition) {
       id
       createdAt
-      users {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -85,10 +190,7 @@ export const updateFollowers = /* GraphQL */ `
     updateFollowers(input: $input, condition: $condition) {
       id
       createdAt
-      users {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -104,10 +206,7 @@ export const deleteFollowers = /* GraphQL */ `
     deleteFollowers(input: $input, condition: $condition) {
       id
       createdAt
-      users {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -126,6 +225,7 @@ export const createLike = /* GraphQL */ `
       userID
       collectionID
       designID
+      commentsID
       updatedAt
       _version
       _deleted
@@ -144,6 +244,7 @@ export const updateLike = /* GraphQL */ `
       userID
       collectionID
       designID
+      commentsID
       updatedAt
       _version
       _deleted
@@ -162,6 +263,7 @@ export const deleteLike = /* GraphQL */ `
       userID
       collectionID
       designID
+      commentsID
       updatedAt
       _version
       _deleted
@@ -180,6 +282,10 @@ export const createComments = /* GraphQL */ `
       userID
       designID
       createdAt
+      Likes {
+        nextToken
+        startedAt
+      }
       updatedAt
       _version
       _deleted
@@ -198,6 +304,10 @@ export const updateComments = /* GraphQL */ `
       userID
       designID
       createdAt
+      Likes {
+        nextToken
+        startedAt
+      }
       updatedAt
       _version
       _deleted
@@ -216,6 +326,10 @@ export const deleteComments = /* GraphQL */ `
       userID
       designID
       createdAt
+      Likes {
+        nextToken
+        startedAt
+      }
       updatedAt
       _version
       _deleted
@@ -297,13 +411,17 @@ export const createDesign = /* GraphQL */ `
       designDescription
       collectionID
       tags
-      designURL
       Comments {
         nextToken
         startedAt
       }
       createdAt
       Likes {
+        nextToken
+        startedAt
+      }
+      designImage
+      Session {
         nextToken
         startedAt
       }
@@ -325,13 +443,17 @@ export const updateDesign = /* GraphQL */ `
       designDescription
       collectionID
       tags
-      designURL
       Comments {
         nextToken
         startedAt
       }
       createdAt
       Likes {
+        nextToken
+        startedAt
+      }
+      designImage
+      Session {
         nextToken
         startedAt
       }
@@ -353,13 +475,17 @@ export const deleteDesign = /* GraphQL */ `
       designDescription
       collectionID
       tags
-      designURL
       Comments {
         nextToken
         startedAt
       }
       createdAt
       Likes {
+        nextToken
+        startedAt
+      }
+      designImage
+      Session {
         nextToken
         startedAt
       }
@@ -389,6 +515,8 @@ export const createCollection = /* GraphQL */ `
         nextToken
         startedAt
       }
+      privacy
+      description
       updatedAt
       _version
       _deleted
@@ -415,6 +543,8 @@ export const updateCollection = /* GraphQL */ `
         nextToken
         startedAt
       }
+      privacy
+      description
       updatedAt
       _version
       _deleted
@@ -441,6 +571,8 @@ export const deleteCollection = /* GraphQL */ `
         nextToken
         startedAt
       }
+      privacy
+      description
       updatedAt
       _version
       _deleted
@@ -490,6 +622,7 @@ export const createUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      uploads
       createdAt
       updatedAt
       _version
@@ -540,6 +673,7 @@ export const updateUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      uploads
       createdAt
       updatedAt
       _version
@@ -590,270 +724,7 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         startedAt
       }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const createFollowingUser = /* GraphQL */ `
-  mutation CreateFollowingUser(
-    $input: CreateFollowingUserInput!
-    $condition: ModelFollowingUserConditionInput
-  ) {
-    createFollowingUser(input: $input, condition: $condition) {
-      id
-      followingId
-      userId
-      following {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateFollowingUser = /* GraphQL */ `
-  mutation UpdateFollowingUser(
-    $input: UpdateFollowingUserInput!
-    $condition: ModelFollowingUserConditionInput
-  ) {
-    updateFollowingUser(input: $input, condition: $condition) {
-      id
-      followingId
-      userId
-      following {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteFollowingUser = /* GraphQL */ `
-  mutation DeleteFollowingUser(
-    $input: DeleteFollowingUserInput!
-    $condition: ModelFollowingUserConditionInput
-  ) {
-    deleteFollowingUser(input: $input, condition: $condition) {
-      id
-      followingId
-      userId
-      following {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const createUserFollowers = /* GraphQL */ `
-  mutation CreateUserFollowers(
-    $input: CreateUserFollowersInput!
-    $condition: ModelUserFollowersConditionInput
-  ) {
-    createUserFollowers(input: $input, condition: $condition) {
-      id
-      followersId
-      userId
-      followers {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const updateUserFollowers = /* GraphQL */ `
-  mutation UpdateUserFollowers(
-    $input: UpdateUserFollowersInput!
-    $condition: ModelUserFollowersConditionInput
-  ) {
-    updateUserFollowers(input: $input, condition: $condition) {
-      id
-      followersId
-      userId
-      followers {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const deleteUserFollowers = /* GraphQL */ `
-  mutation DeleteUserFollowers(
-    $input: DeleteUserFollowersInput!
-    $condition: ModelUserFollowersConditionInput
-  ) {
-    deleteUserFollowers(input: $input, condition: $condition) {
-      id
-      followersId
-      userId
-      followers {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
+      uploads
       createdAt
       updatedAt
       _version

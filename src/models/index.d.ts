@@ -6,15 +6,48 @@ import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/
 
 
 
+type EagerAction = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Action, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly prompt?: string | null;
+  readonly imgKey?: (string | null)[] | null;
+  readonly sessionID: string;
+  readonly tool?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyAction = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Action, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly prompt?: string | null;
+  readonly imgKey?: (string | null)[] | null;
+  readonly sessionID: string;
+  readonly tool?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Action = LazyLoading extends LazyLoadingDisabled ? EagerAction : LazyAction
+
+export declare const Action: (new (init: ModelInit<Action>) => Action) & {
+  copyOf(source: Action, mutator: (draft: MutableModel<Action>) => MutableModel<Action> | void): Action;
+}
+
 type EagerSession = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Session, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly imgKeys?: (string | null)[] | null;
-  readonly prompt?: string | null;
   readonly designID: string;
+  readonly Actions?: (Action | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -25,9 +58,8 @@ type LazySession = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly imgKeys?: (string | null)[] | null;
-  readonly prompt?: string | null;
   readonly designID: string;
+  readonly Actions: AsyncCollection<Action>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

@@ -1,15 +1,208 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getAction = /* GraphQL */ `
+  query GetAction($id: ID!) {
+    getAction(id: $id) {
+      id
+      prompt
+      imgKey
+      sessionID
+      tool
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listActions = /* GraphQL */ `
+  query ListActions(
+    $filter: ModelActionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listActions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        prompt
+        imgKey
+        sessionID
+        tool
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncActions = /* GraphQL */ `
+  query SyncActions(
+    $filter: ModelActionFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncActions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        prompt
+        imgKey
+        sessionID
+        tool
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const actionsBySessionID = /* GraphQL */ `
+  query ActionsBySessionID(
+    $sessionID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelActionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    actionsBySessionID(
+      sessionID: $sessionID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        prompt
+        imgKey
+        sessionID
+        tool
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getSession = /* GraphQL */ `
+  query GetSession($id: ID!) {
+    getSession(id: $id) {
+      id
+      designID
+      Actions {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listSessions = /* GraphQL */ `
+  query ListSessions(
+    $filter: ModelSessionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSessions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        designID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncSessions = /* GraphQL */ `
+  query SyncSessions(
+    $filter: ModelSessionFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncSessions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        designID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const sessionsByDesignID = /* GraphQL */ `
+  query SessionsByDesignID(
+    $designID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelSessionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    sessionsByDesignID(
+      designID: $designID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        designID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getFollowing = /* GraphQL */ `
   query GetFollowing($id: ID!) {
     getFollowing(id: $id) {
       id
       createdAt
-      followingId {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -27,6 +220,7 @@ export const listFollowings = /* GraphQL */ `
       items {
         id
         createdAt
+        userID
         updatedAt
         _version
         _deleted
@@ -53,6 +247,36 @@ export const syncFollowings = /* GraphQL */ `
       items {
         id
         createdAt
+        userID
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const followingsByUserID = /* GraphQL */ `
+  query FollowingsByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelFollowingFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    followingsByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        userID
         updatedAt
         _version
         _deleted
@@ -68,10 +292,7 @@ export const getFollowers = /* GraphQL */ `
     getFollowers(id: $id) {
       id
       createdAt
-      users {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -89,6 +310,7 @@ export const listFollowers = /* GraphQL */ `
       items {
         id
         createdAt
+        userID
         updatedAt
         _version
         _deleted
@@ -115,6 +337,36 @@ export const syncFollowers = /* GraphQL */ `
       items {
         id
         createdAt
+        userID
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const followersByUserID = /* GraphQL */ `
+  query FollowersByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelFollowersFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    followersByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        userID
         updatedAt
         _version
         _deleted
@@ -133,6 +385,7 @@ export const getLike = /* GraphQL */ `
       userID
       collectionID
       designID
+      commentsID
       updatedAt
       _version
       _deleted
@@ -153,6 +406,7 @@ export const listLikes = /* GraphQL */ `
         userID
         collectionID
         designID
+        commentsID
         updatedAt
         _version
         _deleted
@@ -182,6 +436,7 @@ export const syncLikes = /* GraphQL */ `
         userID
         collectionID
         designID
+        commentsID
         updatedAt
         _version
         _deleted
@@ -213,6 +468,7 @@ export const likesByUserID = /* GraphQL */ `
         userID
         collectionID
         designID
+        commentsID
         updatedAt
         _version
         _deleted
@@ -244,6 +500,7 @@ export const likesByCollectionID = /* GraphQL */ `
         userID
         collectionID
         designID
+        commentsID
         updatedAt
         _version
         _deleted
@@ -275,6 +532,39 @@ export const likesByDesignID = /* GraphQL */ `
         userID
         collectionID
         designID
+        commentsID
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const likesByCommentsID = /* GraphQL */ `
+  query LikesByCommentsID(
+    $commentsID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelLikeFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    likesByCommentsID(
+      commentsID: $commentsID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        createdAt
+        userID
+        collectionID
+        designID
+        commentsID
         updatedAt
         _version
         _deleted
@@ -293,6 +583,10 @@ export const getComments = /* GraphQL */ `
       userID
       designID
       createdAt
+      Likes {
+        nextToken
+        startedAt
+      }
       updatedAt
       _version
       _deleted
@@ -532,13 +826,17 @@ export const getDesign = /* GraphQL */ `
       designDescription
       collectionID
       tags
-      designURL
       Comments {
         nextToken
         startedAt
       }
       createdAt
       Likes {
+        nextToken
+        startedAt
+      }
+      designImage
+      Session {
         nextToken
         startedAt
       }
@@ -562,8 +860,8 @@ export const listDesigns = /* GraphQL */ `
         designDescription
         collectionID
         tags
-        designURL
         createdAt
+        designImage
         updatedAt
         _version
         _deleted
@@ -593,8 +891,8 @@ export const syncDesigns = /* GraphQL */ `
         designDescription
         collectionID
         tags
-        designURL
         createdAt
+        designImage
         updatedAt
         _version
         _deleted
@@ -626,8 +924,8 @@ export const designsByCollectionID = /* GraphQL */ `
         designDescription
         collectionID
         tags
-        designURL
         createdAt
+        designImage
         updatedAt
         _version
         _deleted
@@ -654,6 +952,8 @@ export const getCollection = /* GraphQL */ `
         nextToken
         startedAt
       }
+      privacy
+      description
       updatedAt
       _version
       _deleted
@@ -674,6 +974,8 @@ export const listCollections = /* GraphQL */ `
         userID
         createdAt
         collectionURL
+        privacy
+        description
         updatedAt
         _version
         _deleted
@@ -703,6 +1005,8 @@ export const syncCollections = /* GraphQL */ `
         userID
         createdAt
         collectionURL
+        privacy
+        description
         updatedAt
         _version
         _deleted
@@ -734,6 +1038,8 @@ export const collectionsByUserID = /* GraphQL */ `
         userID
         createdAt
         collectionURL
+        privacy
+        description
         updatedAt
         _version
         _deleted
@@ -783,7 +1089,7 @@ export const getUser = /* GraphQL */ `
         nextToken
         startedAt
       }
-      uploads 
+      uploads
       createdAt
       updatedAt
       _version
@@ -812,6 +1118,7 @@ export const listUsers = /* GraphQL */ `
         twitterLink
         email
         profileUrl
+        uploads
         createdAt
         updatedAt
         _version
@@ -849,308 +1156,7 @@ export const syncUsers = /* GraphQL */ `
         twitterLink
         email
         profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getFollowingUser = /* GraphQL */ `
-  query GetFollowingUser($id: ID!) {
-    getFollowingUser(id: $id) {
-      id
-      followingId
-      userId
-      following {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const listFollowingUsers = /* GraphQL */ `
-  query ListFollowingUsers(
-    $filter: ModelFollowingUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listFollowingUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        followingId
-        userId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncFollowingUsers = /* GraphQL */ `
-  query SyncFollowingUsers(
-    $filter: ModelFollowingUserFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncFollowingUsers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        followingId
-        userId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const followingUsersByFollowingId = /* GraphQL */ `
-  query FollowingUsersByFollowingId(
-    $followingId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelFollowingUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    followingUsersByFollowingId(
-      followingId: $followingId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        followingId
-        userId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const followingUsersByUserId = /* GraphQL */ `
-  query FollowingUsersByUserId(
-    $userId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelFollowingUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    followingUsersByUserId(
-      userId: $userId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        followingId
-        userId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getUserFollowers = /* GraphQL */ `
-  query GetUserFollowers($id: ID!) {
-    getUserFollowers(id: $id) {
-      id
-      followersId
-      userId
-      followers {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const listUserFollowers = /* GraphQL */ `
-  query ListUserFollowers(
-    $filter: ModelUserFollowersFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUserFollowers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        followersId
-        userId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncUserFollowers = /* GraphQL */ `
-  query SyncUserFollowers(
-    $filter: ModelUserFollowersFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncUserFollowers(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        followersId
-        userId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const userFollowersByFollowersId = /* GraphQL */ `
-  query UserFollowersByFollowersId(
-    $followersId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelUserFollowersFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    userFollowersByFollowersId(
-      followersId: $followersId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        followersId
-        userId
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const userFollowersByUserId = /* GraphQL */ `
-  query UserFollowersByUserId(
-    $userId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelUserFollowersFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    userFollowersByUserId(
-      userId: $userId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        followersId
-        userId
+        uploads
         createdAt
         updatedAt
         _version

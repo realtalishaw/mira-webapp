@@ -4,9 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Session, Following, Followers, Like, Comments, MoodBoard, Design, Collection, User } = initSchema(schema);
+const { Action, Session, Following, Followers, Like, Comments, MoodBoard, Design, Collection, User } = initSchema(schema);
 
 export {
+  Action,
   Session,
   Following,
   Followers,

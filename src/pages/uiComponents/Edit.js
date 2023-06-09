@@ -4,26 +4,13 @@ import { DesignStudioContext } from '../../DesignStudioContext';
 import { Storage } from '@aws-amplify/storage'; 
 
 const Edit = () => {
-  const { canvasContext, actionHistory } = useContext(DesignStudioContext);
+  const { canvasContext, saveAction } = useContext(DesignStudioContext);
   const [drawing, setDrawing] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [lastPosition, setLastPosition] = useState({ x: 0, y: 0 });
   const brushSizeRef = useRef(null);
   const [currentCollapsible, setCurrentCollapsible] = useState("Brush over the Image");
-  const [lastPrompt, setLastPrompt] = useState("");
-const [currentPrompt, setCurrentPrompt] = useState("");
 
-useEffect(() => {
-  // check if actionHistory has at least one action before setting currentPrompt
-  if (actionHistory.length > 0) {
-    setCurrentPrompt(actionHistory[actionHistory.length - 1].payload);
-  }
-  
-  // check if actionHistory has at least two actions before setting lastPrompt
-  if (actionHistory.length > 1) {
-    setLastPrompt(actionHistory[actionHistory.length - 2].payload);
-  }
-}, [actionHistory]);
   const updateMousePosition = (ev) => {
     const { offsetX, offsetY } = ev;
     if (drawing) {
@@ -78,9 +65,7 @@ useEffect(() => {
     }
   };
   const handleGenerate = () => {
-    console.log("Last Prompt: ", lastPrompt);
-    console.log("Current Prompt: ", currentPrompt);
-    // Handle generate new results
+    saveAction('EDIT', {tool:"edit", input:"input urls and prompt", output:"imageKeys"})
   };
 
   const handleContinue = () => {
@@ -101,9 +86,9 @@ useEffect(() => {
         console.error('Error uploading file: ', error);
       }
     }, 'image/png');
-    console.log("Last Prompt: ", lastPrompt);
-    console.log("Current Prompt: ", currentPrompt);
+  
     setCurrentCollapsible("Select a result");
+    saveAction('EDIT', {tool:"edit", input:"input urls and prompt", output:"imageKeys"})
   };
   
   useEffect(() => {

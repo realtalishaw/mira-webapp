@@ -9,8 +9,18 @@ import Settings from './pages/Settings';
 import UserProfile from './pages/UserProfile';
 import Help from './pages/Help';
 import PublicCollectionPage from './pages/PublicCollectionPage';
-import UserProvider from './UserProvider'; // import your UserProvider
+import UserProvider from './UserProvider'; 
 import { DesignStudioProvider } from './DesignStudioContext';
+import { useParams } from 'react-router-dom';
+
+const DesignStudioWithProvider = () => {
+  const { design_id } = useParams();
+  return (
+    <DesignStudioProvider designId={design_id}>
+      <DesignStudio />
+    </DesignStudioProvider>
+  );
+};
 
 const App = () => {
   return (
@@ -24,9 +34,7 @@ const App = () => {
           <Route path="/sharefeed" element={<ShareFeed /> }/>
           <Route path="/designstudio/:collection_name/:design_id" element={
             <ProtectedElement>
-              <DesignStudioProvider>
-                <DesignStudio />
-              </DesignStudioProvider>
+              <DesignStudioWithProvider />
             </ProtectedElement>
           } />
           <Route path="/settings/:username" element={<ProtectedElement><Settings /></ProtectedElement>} />

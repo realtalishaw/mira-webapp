@@ -6,46 +6,27 @@ const initialState = {
   actions: []
 };
 
-// Action history reducer function
-const actionHistoryReducer = (state, action) => {
-  switch (action.type) {
-    case 'CREATE_DESIGN':
-      return {
-        ...state,
-        actions: [...state.actions, action.payload],
-      };
-    default:
-      return state;
-  }
-};
 
 const Prompt = () => {
-  const { generateImage } = useContext(DesignStudioContext);
+  const { generateImage, saveAction } = useContext(DesignStudioContext);
   const [view, setView] = useState('front');
   const [prompt, setPrompt] = useState('');
   const [negativePrompt, setNegativePrompt] = useState('');
   const [loading, setLoading] = useState(false);
   
-  // Using reducer for action history state management
-  const [state, dispatch] = useReducer(actionHistoryReducer, initialState);
+
 
   const handleCreate = async () => {
     // Combine the inputs into a single string
     setLoading(true);
     const designText = `${view} ${prompt} ${negativePrompt}`;
     console.log("Creating......")
-    await generateImage(designText);
-
-    // Dispatch the action to the reducer
-    dispatch({ 
-      type: 'CREATE_DESIGN',
-      payload: {
-        time: new Date(),
-        action: 'CREATE_DESIGN',
-        description: `Created a design with view: ${view}, prompt: ${prompt}, negative prompt: ${negativePrompt}`,
-      },
-    });
-
+  
+    // Wait for generateImage to finish and save the returned filenames
+    const imageKeys = await generateImage(designText);
+  
+    // Save the action with appropriate type and payload
+    saveAction('CREATE', { tool: 'Create', prompt: designText, imgKey: imageKeys })
     setLoading(false);
   };
 

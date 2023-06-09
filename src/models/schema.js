@@ -1,5 +1,95 @@
 export const schema = {
     "models": {
+        "Action": {
+            "name": "Action",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "prompt": {
+                    "name": "prompt",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "imgKey": {
+                    "name": "imgKey",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "sessionID": {
+                    "name": "sessionID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tool": {
+                    "name": "tool",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Actions",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "bySession",
+                        "fields": [
+                            "sessionID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Session": {
             "name": "Session",
             "fields": {
@@ -10,27 +100,28 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "imgKeys": {
-                    "name": "imgKeys",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "prompt": {
-                    "name": "prompt",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "designID": {
                     "name": "designID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
                     "attributes": []
+                },
+                "Actions": {
+                    "name": "Actions",
+                    "isArray": true,
+                    "type": {
+                        "model": "Action"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "sessionID"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1052,5 +1143,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.3",
-    "version": "412d6922cc7261e0877b2c1e5532f21c"
+    "version": "b1ca084a13d881a25b109dc7cad64568"
 };

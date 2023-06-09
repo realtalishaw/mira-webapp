@@ -1,8 +1,15 @@
+type Action @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  prompt: String
+  imgKey: [String]
+  sessionID: ID! @index(name: "bySession")
+  tool: String
+}
+
 type Session @model @auth(rules: [{allow: public}]) {
   id: ID!
-  imgKeys: [String]
-  prompt: String
   designID: ID! @index(name: "byDesign")
+  Actions: [Action] @hasMany(indexName: "bySession", fields: ["id"])
 }
 
 type Following @model @auth(rules: [{allow: public}]) {

@@ -16,7 +16,7 @@ const ImageHolder = ({ imageKeys }) => {
       if (imageKeys) {
         console.log('Image Keys:', imageKeys)
         let urls = await Promise.all(imageKeys.map(key => Storage.get(key, {
-          level: ''
+          level: 'public'
         })));
         console.log('Fetched URLs:', urls); // Log the URLs
         setImageUrls(urls);
@@ -29,9 +29,8 @@ const ImageHolder = ({ imageKeys }) => {
 
 
 
-
   useEffect(() => {
-    if (selectedImage) {
+    if (selectedImage && canvasRef.current) {
       const canvas = canvasRef.current;
       const context = canvas.getContext('2d');
       setCanvasContext(context);
@@ -41,10 +40,20 @@ const ImageHolder = ({ imageKeys }) => {
         canvas.height = canvas.clientHeight;
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
       }
+      img.onerror = function() {
+        console.log("Failed to load image at " + img.src);
+      }
       img.crossOrigin = "anonymous";  // Set crossOrigin before setting src
       img.src = selectedImage;
+      console.log("Canvas img url", img.src)
+  
+      if (img.complete) {  // If the image has already loaded
+        context.drawImage(img, 0, 0, canvas.width, canvas.height);
+      }
     }
   }, [selectedImage]);
+  
+  
 
   if (!imageUrls?.length) {
     return null; // Or return a loading spinner

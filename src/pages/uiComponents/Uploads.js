@@ -6,8 +6,10 @@ import { Image } from '@aws-amplify/ui-react';
 import UserContext from '../../UserContext';
 import { User } from '../../models';
 import { DataStore } from '@aws-amplify/datastore';
+import { DesignStudioContext } from '../../DesignStudioContext';
 
 const Uploads = () => {
+    const { saveAction } = useContext(DesignStudioContext);
     const [fileURLs, setFileURLs] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
     const [promptText, setPromptText] = useState("");
@@ -73,7 +75,8 @@ const Uploads = () => {
     }
 
     const handleCreateClick = () => {
-        // API call here with selectedImage and promptText
+        console.log("create button clicked")
+        saveAction('UPLOAD', {tool: "uploads", input: promptText, output:"imageKeys"})
     }
 
     return (

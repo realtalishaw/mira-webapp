@@ -4,7 +4,7 @@ import PatternSelect from './PatternSelect';
 import { DesignStudioContext } from '../../DesignStudioContext';
 
 const Variations = () => {
-  const { generateImage } = useContext(DesignStudioContext);
+  const { generateImage, saveAction } = useContext(DesignStudioContext);
   const [colors, setColors] = useState(['#000000']);
   const [prompt, setPrompt] = useState('');
   const [pattern, setPattern] = useState('none');
@@ -41,7 +41,8 @@ const Variations = () => {
     const colorsString = colors.join(', ');
     const patternName = pattern ? pattern.name : 'none';
     const variationString = `Prompt: ${prompt}, Colors: ${colorsString}, Pattern: ${patternName}`;
-   generateImage(variationString);
+   const imageKeys = generateImage(variationString);
+    saveAction('VARIATIONS', { tool: 'Variations', input: variationString, output: imageKeys })
   };
   
   

@@ -1,6 +1,105 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateAction = /* GraphQL */ `
+  subscription OnCreateAction($filter: ModelSubscriptionActionFilterInput) {
+    onCreateAction(filter: $filter) {
+      id
+      prompt
+      imgKey
+      sessionID
+      tool
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateAction = /* GraphQL */ `
+  subscription OnUpdateAction($filter: ModelSubscriptionActionFilterInput) {
+    onUpdateAction(filter: $filter) {
+      id
+      prompt
+      imgKey
+      sessionID
+      tool
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteAction = /* GraphQL */ `
+  subscription OnDeleteAction($filter: ModelSubscriptionActionFilterInput) {
+    onDeleteAction(filter: $filter) {
+      id
+      prompt
+      imgKey
+      sessionID
+      tool
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateSession = /* GraphQL */ `
+  subscription OnCreateSession($filter: ModelSubscriptionSessionFilterInput) {
+    onCreateSession(filter: $filter) {
+      id
+      designID
+      Actions {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateSession = /* GraphQL */ `
+  subscription OnUpdateSession($filter: ModelSubscriptionSessionFilterInput) {
+    onUpdateSession(filter: $filter) {
+      id
+      designID
+      Actions {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteSession = /* GraphQL */ `
+  subscription OnDeleteSession($filter: ModelSubscriptionSessionFilterInput) {
+    onDeleteSession(filter: $filter) {
+      id
+      designID
+      Actions {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const onCreateFollowing = /* GraphQL */ `
   subscription OnCreateFollowing(
     $filter: ModelSubscriptionFollowingFilterInput
@@ -8,10 +107,7 @@ export const onCreateFollowing = /* GraphQL */ `
     onCreateFollowing(filter: $filter) {
       id
       createdAt
-      followingId {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -26,10 +122,7 @@ export const onUpdateFollowing = /* GraphQL */ `
     onUpdateFollowing(filter: $filter) {
       id
       createdAt
-      followingId {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -44,10 +137,7 @@ export const onDeleteFollowing = /* GraphQL */ `
     onDeleteFollowing(filter: $filter) {
       id
       createdAt
-      followingId {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -62,10 +152,7 @@ export const onCreateFollowers = /* GraphQL */ `
     onCreateFollowers(filter: $filter) {
       id
       createdAt
-      users {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -80,10 +167,7 @@ export const onUpdateFollowers = /* GraphQL */ `
     onUpdateFollowers(filter: $filter) {
       id
       createdAt
-      users {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -98,10 +182,7 @@ export const onDeleteFollowers = /* GraphQL */ `
     onDeleteFollowers(filter: $filter) {
       id
       createdAt
-      users {
-        nextToken
-        startedAt
-      }
+      userID
       updatedAt
       _version
       _deleted
@@ -117,6 +198,7 @@ export const onCreateLike = /* GraphQL */ `
       userID
       collectionID
       designID
+      commentsID
       updatedAt
       _version
       _deleted
@@ -132,6 +214,7 @@ export const onUpdateLike = /* GraphQL */ `
       userID
       collectionID
       designID
+      commentsID
       updatedAt
       _version
       _deleted
@@ -147,6 +230,7 @@ export const onDeleteLike = /* GraphQL */ `
       userID
       collectionID
       designID
+      commentsID
       updatedAt
       _version
       _deleted
@@ -162,6 +246,10 @@ export const onCreateComments = /* GraphQL */ `
       userID
       designID
       createdAt
+      Likes {
+        nextToken
+        startedAt
+      }
       updatedAt
       _version
       _deleted
@@ -177,6 +265,10 @@ export const onUpdateComments = /* GraphQL */ `
       userID
       designID
       createdAt
+      Likes {
+        nextToken
+        startedAt
+      }
       updatedAt
       _version
       _deleted
@@ -192,6 +284,10 @@ export const onDeleteComments = /* GraphQL */ `
       userID
       designID
       createdAt
+      Likes {
+        nextToken
+        startedAt
+      }
       updatedAt
       _version
       _deleted
@@ -267,13 +363,17 @@ export const onCreateDesign = /* GraphQL */ `
       designDescription
       collectionID
       tags
-      designURL
       Comments {
         nextToken
         startedAt
       }
       createdAt
       Likes {
+        nextToken
+        startedAt
+      }
+      designImage
+      Session {
         nextToken
         startedAt
       }
@@ -292,13 +392,17 @@ export const onUpdateDesign = /* GraphQL */ `
       designDescription
       collectionID
       tags
-      designURL
       Comments {
         nextToken
         startedAt
       }
       createdAt
       Likes {
+        nextToken
+        startedAt
+      }
+      designImage
+      Session {
         nextToken
         startedAt
       }
@@ -317,13 +421,17 @@ export const onDeleteDesign = /* GraphQL */ `
       designDescription
       collectionID
       tags
-      designURL
       Comments {
         nextToken
         startedAt
       }
       createdAt
       Likes {
+        nextToken
+        startedAt
+      }
+      designImage
+      Session {
         nextToken
         startedAt
       }
@@ -352,6 +460,8 @@ export const onCreateCollection = /* GraphQL */ `
         nextToken
         startedAt
       }
+      privacy
+      description
       updatedAt
       _version
       _deleted
@@ -377,6 +487,8 @@ export const onUpdateCollection = /* GraphQL */ `
         nextToken
         startedAt
       }
+      privacy
+      description
       updatedAt
       _version
       _deleted
@@ -402,6 +514,8 @@ export const onDeleteCollection = /* GraphQL */ `
         nextToken
         startedAt
       }
+      privacy
+      description
       updatedAt
       _version
       _deleted
@@ -448,6 +562,7 @@ export const onCreateUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      uploads
       createdAt
       updatedAt
       _version
@@ -495,6 +610,7 @@ export const onUpdateUser = /* GraphQL */ `
         nextToken
         startedAt
       }
+      uploads
       createdAt
       updatedAt
       _version
@@ -542,264 +658,7 @@ export const onDeleteUser = /* GraphQL */ `
         nextToken
         startedAt
       }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onCreateFollowingUser = /* GraphQL */ `
-  subscription OnCreateFollowingUser(
-    $filter: ModelSubscriptionFollowingUserFilterInput
-  ) {
-    onCreateFollowingUser(filter: $filter) {
-      id
-      followingId
-      userId
-      following {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateFollowingUser = /* GraphQL */ `
-  subscription OnUpdateFollowingUser(
-    $filter: ModelSubscriptionFollowingUserFilterInput
-  ) {
-    onUpdateFollowingUser(filter: $filter) {
-      id
-      followingId
-      userId
-      following {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteFollowingUser = /* GraphQL */ `
-  subscription OnDeleteFollowingUser(
-    $filter: ModelSubscriptionFollowingUserFilterInput
-  ) {
-    onDeleteFollowingUser(filter: $filter) {
-      id
-      followingId
-      userId
-      following {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onCreateUserFollowers = /* GraphQL */ `
-  subscription OnCreateUserFollowers(
-    $filter: ModelSubscriptionUserFollowersFilterInput
-  ) {
-    onCreateUserFollowers(filter: $filter) {
-      id
-      followersId
-      userId
-      followers {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onUpdateUserFollowers = /* GraphQL */ `
-  subscription OnUpdateUserFollowers(
-    $filter: ModelSubscriptionUserFollowersFilterInput
-  ) {
-    onUpdateUserFollowers(filter: $filter) {
-      id
-      followersId
-      userId
-      followers {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-    }
-  }
-`;
-export const onDeleteUserFollowers = /* GraphQL */ `
-  subscription OnDeleteUserFollowers(
-    $filter: ModelSubscriptionUserFollowersFilterInput
-  ) {
-    onDeleteUserFollowers(filter: $filter) {
-      id
-      followersId
-      userId
-      followers {
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
-      user {
-        id
-        avatar
-        firstName
-        lastName
-        username
-        bio
-        website
-        facebookLink
-        instagramLink
-        twitterLink
-        email
-        profileUrl
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-      }
+      uploads
       createdAt
       updatedAt
       _version
