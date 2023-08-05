@@ -10,6 +10,7 @@ import UserProfile from './pages/UserProfile';
 import Help from './pages/Help';
 import PublicCollectionPage from './pages/PublicCollectionPage';
 import UserProvider from './UserProvider'; 
+import LandingPage from './pages/LandingPage'
 import { DesignStudioProvider } from './DesignStudioContext';
 import { useParams } from 'react-router-dom';
 
@@ -27,7 +28,8 @@ const App = () => {
     <UserProvider>  
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/designlibrary/:username" element={<ProtectedElement><DesignLibrary /></ProtectedElement>} />
           <Route path="/collection/:collection_id" element={<ProtectedElement><CollectionPage /></ProtectedElement>} />
           <Route path="/collection/:collection_id/:collectionName" element={<PublicCollectionPage />} />

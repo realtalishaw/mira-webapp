@@ -22,7 +22,7 @@ const DesignLibrary = () => {
             return { ...collection, designs: designs.slice(0, 3) };
           })
         );
-
+        console.log("collections", updatedCollections)
         setCollections(updatedCollections);
       } catch (error) {
         console.error("Error", error);

@@ -63,8 +63,9 @@ const DesignStudioHeader = ({ collectionName }) => {
   }
 
   const saveDesign = async(event) => {
-    const image = selectedImage;
-    console.log(image)
+    const imageUrl = selectedImage; // Full URL of the image
+    const imageKey = imageUrl.split('/public/')[1].split('?')[0]; // Extracts the file key from the URL
+    console.log(imageKey);
     try {
       // Fetch the original design
       const originalDesign = await DataStore.query(Design, design_id);
@@ -76,7 +77,7 @@ const DesignStudioHeader = ({ collectionName }) => {
           updated.designName = designName;
           updated.designDescription = designDescription;
           updated.tags = tags;
-          updated.designImage = image;
+          updated.designImage = imageKey;
         })
       );
         console.log("Updated Design:", updated)

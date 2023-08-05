@@ -16,6 +16,7 @@ const NewCollectionModal = ({ isOpen, onClose, user }) => {
 
 
     const handleSubmit = async (event) => {
+        console.log("create collection button clicked")
         event.preventDefault();
 
         try {

@@ -51,7 +51,7 @@ const ImageHolder = ({ imageKeys }) => {
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
       }
     }
-  }, [selectedImage]);
+  }, [selectedImage, setCanvasContext]);
   
   
 
