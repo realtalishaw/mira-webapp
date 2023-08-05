@@ -45,7 +45,7 @@ export default function Left() {
           </div>
           <div className="flex items-start justify-end lg:order-first">
             <img
-              src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
+              src="/images/profile.png"
               alt="Product screenshot"
               className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
               width={2432}

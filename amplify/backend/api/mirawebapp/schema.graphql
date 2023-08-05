@@ -98,5 +98,6 @@ type User @model @auth(rules: [{allow: public}]) {
   Followers: [Followers] @hasMany(indexName: "byUser", fields: ["id"])
   followings: [Following] @hasMany(indexName: "byUser", fields: ["id"])
   uploads: [String]
+  test: String
 }
  

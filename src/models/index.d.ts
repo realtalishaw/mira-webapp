@@ -338,6 +338,7 @@ type EagerUser = {
   readonly Followers?: (Followers | null)[] | null;
   readonly followings?: (Following | null)[] | null;
   readonly uploads?: (string | null)[] | null;
+  readonly test?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -366,6 +367,7 @@ type LazyUser = {
   readonly Followers: AsyncCollection<Followers>;
   readonly followings: AsyncCollection<Following>;
   readonly uploads?: (string | null)[] | null;
+  readonly test?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

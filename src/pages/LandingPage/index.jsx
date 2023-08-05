@@ -50,7 +50,7 @@ export default function Example() {
           <div className="fixed inset-0 z-50" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
+              <a href="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">Mira</span>
                 <img
                   className="h-8 w-auto"
@@ -82,7 +82,7 @@ export default function Example() {
                 </div>
                 <div className="py-6">
                   <a
-                    href="#"
+                    href="/login"
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white hover:bg-gray-800"
                   >
                     Log in
@@ -118,7 +118,7 @@ export default function Example() {
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
-                  href=""
+                  href="/login"
                   className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
                 >
                   Get started
@@ -129,11 +129,11 @@ export default function Example() {
               </div>
             </div>
             <img
-              src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
+              src="/images/demo.gif"
               alt="App screenshot"
               width={2432}
-              height={1442}
-              className="mt-16 rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10 sm:mt-24"
+              height={1342}
+              className="mt-16 rounded-lg bg-white/5 shadow-3xl shadow-indigo-900 ring-1 ring-white/10 sm:mt-24"
             />
           </div>
         </div>

@@ -204,6 +204,7 @@ export default function UserCreateForm(props) {
     email: "",
     profileUrl: "",
     uploads: [],
+    test: "",
   };
   const [avatar, setAvatar] = React.useState(initialValues.avatar);
   const [firstName, setFirstName] = React.useState(initialValues.firstName);
@@ -223,6 +224,7 @@ export default function UserCreateForm(props) {
   const [email, setEmail] = React.useState(initialValues.email);
   const [profileUrl, setProfileUrl] = React.useState(initialValues.profileUrl);
   const [uploads, setUploads] = React.useState(initialValues.uploads);
+  const [test, setTest] = React.useState(initialValues.test);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setAvatar(initialValues.avatar);
@@ -238,6 +240,7 @@ export default function UserCreateForm(props) {
     setProfileUrl(initialValues.profileUrl);
     setUploads(initialValues.uploads);
     setCurrentUploadsValue("");
+    setTest(initialValues.test);
     setErrors({});
   };
   const [currentUploadsValue, setCurrentUploadsValue] = React.useState("");
@@ -255,6 +258,7 @@ export default function UserCreateForm(props) {
     email: [{ type: "Required" }, { type: "Email" }],
     profileUrl: [{ type: "Required" }],
     uploads: [],
+    test: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -294,6 +298,7 @@ export default function UserCreateForm(props) {
           email,
           profileUrl,
           uploads,
+          test,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -360,6 +365,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.avatar ?? value;
@@ -395,6 +401,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.firstName ?? value;
@@ -430,6 +437,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.lastName ?? value;
@@ -465,6 +473,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.username ?? value;
@@ -500,6 +509,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.bio ?? value;
@@ -535,6 +545,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.website ?? value;
@@ -570,6 +581,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.facebookLink ?? value;
@@ -605,6 +617,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.instagramLink ?? value;
@@ -640,6 +653,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.twitterLink ?? value;
@@ -675,6 +689,7 @@ export default function UserCreateForm(props) {
               email: value,
               profileUrl,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -710,6 +725,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl: value,
               uploads,
+              test,
             };
             const result = onChange(modelFields);
             value = result?.profileUrl ?? value;
@@ -741,6 +757,7 @@ export default function UserCreateForm(props) {
               email,
               profileUrl,
               uploads: values,
+              test,
             };
             const result = onChange(modelFields);
             values = result?.uploads ?? values;
@@ -777,6 +794,42 @@ export default function UserCreateForm(props) {
           {...getOverrideProps(overrides, "uploads")}
         ></TextField>
       </ArrayField>
+      <TextField
+        label="Test"
+        isRequired={false}
+        isReadOnly={false}
+        value={test}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              avatar,
+              firstName,
+              lastName,
+              username,
+              bio,
+              website,
+              facebookLink,
+              instagramLink,
+              twitterLink,
+              email,
+              profileUrl,
+              uploads,
+              test: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.test ?? value;
+          }
+          if (errors.test?.hasError) {
+            runValidationTasks("test", value);
+          }
+          setTest(value);
+        }}
+        onBlur={() => runValidationTasks("test", test)}
+        errorMessage={errors.test?.errorMessage}
+        hasError={errors.test?.hasError}
+        {...getOverrideProps(overrides, "test")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
